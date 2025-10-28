@@ -74,4 +74,11 @@ public class CodePanel : MonoBehaviour
         foreach (var field in digitFields)
             field.text = "";
     }
+
+        public void ClosePanel()
+    {
+        Debug.Log("❌ Code panel closed by player");
+        gameObject.SetActive(false);
+    }
+
 }
