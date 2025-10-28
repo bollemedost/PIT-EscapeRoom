@@ -6,6 +6,10 @@ public class EventManager : MonoBehaviour
 {
     public static EventManager Instance;
 
+    [Header("Testing Options")]
+    [Tooltip("If enabled, all events can trigger freely without prerequisites (useful for testing).")]
+    public bool testingMode = true;
+
     public enum GameEvent
     {
         ChestOpened,
@@ -30,37 +34,73 @@ public class EventManager : MonoBehaviour
     // Trigger an event and handle logic
     public void TriggerEvent(GameEvent newEvent)
     {
-        if (triggeredEvents.Contains(newEvent)) return;
+        if (triggeredEvents.Contains(newEvent))
+        {
+            Debug.Log($"Event {newEvent} was already triggered – skipping.");
+            return;
+        }
 
         // Check if prerequisites are met before triggering
         if (CanTriggerEvent(newEvent))
         {
             triggeredEvents.Add(newEvent);
-            Debug.Log($"Event triggered: {newEvent}");
+            Debug.Log($"✅ Event triggered: {newEvent}");
             HandleEventLogic(newEvent);
         }
         else
         {
-            Debug.Log($"Cannot trigger {newEvent} yet – prerequisites not met.");
+            Debug.Log($"❌ Cannot trigger {newEvent} yet – prerequisites not met.");
         }
     }
 
     private bool CanTriggerEvent(GameEvent newEvent)
     {
+        if (testingMode) return true; // allow all for testing
+
         switch (newEvent)
         {
             case GameEvent.WandPickedUp:
-                return triggeredEvents.Contains(GameEvent.ChestOpened);
+                if (!triggeredEvents.Contains(GameEvent.ChestOpened))
+                {
+                    Debug.Log("⚠️ Missing prerequisite: ChestOpened");
+                    return false;
+                }
+                return true;
+
             case GameEvent.RecipePickedUp:
-                return triggeredEvents.Contains(GameEvent.WandPickedUp);
+                if (!triggeredEvents.Contains(GameEvent.WandPickedUp))
+                {
+                    Debug.Log("⚠️ Missing prerequisite: WandPickedUp");
+                    return false;
+                }
+                return true;
+
             case GameEvent.CorrectIngredientAdded:
-                return triggeredEvents.Contains(GameEvent.RecipePickedUp);
+                if (!triggeredEvents.Contains(GameEvent.RecipePickedUp))
+                {
+                    Debug.Log("⚠️ Missing prerequisite: RecipePickedUp");
+                    return false;
+                }
+                return true;
+
             case GameEvent.WordCompleted:
-                return triggeredEvents.Contains(GameEvent.CorrectIngredientAdded);
+                if (!triggeredEvents.Contains(GameEvent.CorrectIngredientAdded))
+                {
+                    Debug.Log("⚠️ Missing prerequisite: CorrectIngredientAdded");
+                    return false;
+                }
+                return true;
+
             case GameEvent.ChessKingMoved:
-                return triggeredEvents.Contains(GameEvent.WordCompleted);
+                if (!triggeredEvents.Contains(GameEvent.WordCompleted))
+                {
+                    Debug.Log("⚠️ Missing prerequisite: WordCompleted");
+                    return false;
+                }
+                return true;
+
             default:
-                return true; // first event or independent ones
+                return true; // independent or first event
         }
     }
 
@@ -69,35 +109,40 @@ public class EventManager : MonoBehaviour
         switch (newEvent)
         {
             case GameEvent.ChestOpened:
-                // Maybe play sound or highlight the wand
+                // Example: highlight wand or play sound
                 break;
+
             case GameEvent.WandPickedUp:
-                // Allow picking up ingredients
+                // Example: allow picking up ingredients
                 break;
+
             case GameEvent.RecipePickedUp:
-                // Show recipe UI
+                // Example: show recipe UI
                 break;
+
             case GameEvent.CorrectIngredientAdded:
-                // Add letter to collection
+                // Example: collect letter
                 CheckIfWordIsComplete();
                 break;
+
             case GameEvent.WrongIngredientAdded:
-                // Reject and spit out
+                // Example: reject and play sound
                 break;
+
             case GameEvent.WordCompleted:
-                // Enable chess king movement
+                // Example: unlock chess event
                 break;
+
             case GameEvent.ChessKingMoved:
-                // Trigger next puzzle or scene end
+                // Example: end puzzle or trigger cutscene
                 break;
         }
     }
 
     private void CheckIfWordIsComplete()
     {
-        // Example: if player has all letters K, I, N, G
-        // (you can track this with your own logic)
-        bool allLettersCollected = true; 
+        // Example logic — you can track this properly later
+        bool allLettersCollected = true;
         if (allLettersCollected)
             TriggerEvent(GameEvent.WordCompleted);
     }
