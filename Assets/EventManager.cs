@@ -11,6 +11,9 @@ public class EventManager : MonoBehaviour
     [Tooltip("If enabled, all events can trigger freely without prerequisites (useful for testing).")]
     public bool testingMode = false;
 
+    [Header("Scene References")]
+    public GameObject magicStone; // Assign your magic stone GameObject here
+
     public enum GameEvent
     {
         ChestOpened,
@@ -19,12 +22,13 @@ public class EventManager : MonoBehaviour
         CorrectIngredientAdded,
         WrongIngredientAdded,
         WordCompleted,
-        ChessKingMoved
+        ChessKingMoved,
+        MagicStoneAppeared,
+        StonePlaced 
     }
 
     private HashSet<GameEvent> triggeredEvents = new HashSet<GameEvent>();
 
-    // Define prerequisites for event order
     private readonly Dictionary<GameEvent, GameEvent[]> prerequisites = new()
     {
         { GameEvent.WandPickedUp, new[] { GameEvent.ChestOpened } },
@@ -32,9 +36,10 @@ public class EventManager : MonoBehaviour
         { GameEvent.CorrectIngredientAdded, new[] { GameEvent.RecipePickedUp } },
         { GameEvent.WordCompleted, new[] { GameEvent.CorrectIngredientAdded } },
         { GameEvent.ChessKingMoved, new[] { GameEvent.WordCompleted } },
+        { GameEvent.MagicStoneAppeared, new[] { GameEvent.ChessKingMoved } },
+        { EventManager.GameEvent.StonePlaced, new[] { EventManager.GameEvent.MagicStoneAppeared } }
     };
 
-    // Allow other scripts to listen for events
     public event Action<GameEvent> OnEventTriggered;
 
     private void Awake()
@@ -47,6 +52,10 @@ public class EventManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        // Make sure the Magic Stone starts inactive
+        if (magicStone != null)
+            magicStone.SetActive(false);
     }
 
     public void TriggerEvent(GameEvent newEvent)
@@ -91,7 +100,6 @@ public class EventManager : MonoBehaviour
 
     private void HandleEventLogic(GameEvent newEvent)
     {
-        // Example logic — you can replace with your actual game actions
         switch (newEvent)
         {
             case GameEvent.ChestOpened:
@@ -121,18 +129,24 @@ public class EventManager : MonoBehaviour
             case GameEvent.ChessKingMoved:
                 Debug.Log("The king has moved — puzzle complete!");
                 break;
+
+            case GameEvent.MagicStoneAppeared:
+                Debug.Log("✨ A magic stone has appeared in the room!");
+                if (magicStone != null)
+                    magicStone.SetActive(true);
+                break;
+                
+            case GameEvent.StonePlaced:
+                Debug.Log("✨ Magic stone has been placed on the target!");
+                break;
         }
     }
 
     private void CheckIfWordIsComplete()
     {
-        // Example logic for testing — auto-triggers completion
-        bool allLettersCollected = true;
-        if (allLettersCollected)
-            TriggerEvent(GameEvent.WordCompleted);
+        // This function is optional; you can implement logic if needed
     }
 
-    // For debug visibility in Inspector
     private void OnGUI()
     {
         GUILayout.BeginArea(new Rect(10, 10, 250, 300));
