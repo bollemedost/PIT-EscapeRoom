@@ -17,14 +17,14 @@ public class Chest : MonoBehaviour
 
     void Update()
     {
-        // Optional editor testing
+        // Optional: For desktop testing only
         if (Input.GetKeyDown(KeyCode.E))
         {
             ShowCodeCanvas();
         }
     }
 
-    // Only show the code canvas, don't open chest here
+    // Show the code canvas (for entering code, etc.)
     public void ShowCodeCanvas()
     {
         if (spawnedCanvas != null) return;
@@ -39,10 +39,13 @@ public class Chest : MonoBehaviour
         spawnedCanvas.SetActive(true);
     }
 
-    // This method is now only called **when the code is correct**
+    // Called when the player has entered the correct code or completed the puzzle
     public void OpenChest()
     {
         if (animator != null)
             animator.SetTrigger("Open");
+
+        // ✅ Tell the event manager this event happened
+        EventManager.Instance.TriggerEvent(EventManager.GameEvent.ChestOpened);
     }
 }

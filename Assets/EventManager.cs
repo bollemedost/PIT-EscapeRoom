@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class EventManager : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class EventManager : MonoBehaviour
 
     [Header("Testing Options")]
     [Tooltip("If enabled, all events can trigger freely without prerequisites (useful for testing).")]
-    public bool testingMode = true;
+    public bool testingMode = false;
 
     public enum GameEvent
     {
@@ -23,28 +24,44 @@ public class EventManager : MonoBehaviour
 
     private HashSet<GameEvent> triggeredEvents = new HashSet<GameEvent>();
 
+    // Define prerequisites for event order
+    private readonly Dictionary<GameEvent, GameEvent[]> prerequisites = new()
+    {
+        { GameEvent.WandPickedUp, new[] { GameEvent.ChestOpened } },
+        { GameEvent.RecipePickedUp, new[] { GameEvent.WandPickedUp } },
+        { GameEvent.CorrectIngredientAdded, new[] { GameEvent.RecipePickedUp } },
+        { GameEvent.WordCompleted, new[] { GameEvent.CorrectIngredientAdded } },
+        { GameEvent.ChessKingMoved, new[] { GameEvent.WordCompleted } },
+    };
+
+    // Allow other scripts to listen for events
+    public event Action<GameEvent> OnEventTriggered;
+
     private void Awake()
     {
         if (Instance == null)
+        {
             Instance = this;
+        }
         else
+        {
             Destroy(gameObject);
+        }
     }
 
-    // Trigger an event and handle logic
     public void TriggerEvent(GameEvent newEvent)
     {
         if (triggeredEvents.Contains(newEvent))
         {
-            Debug.Log($"Event {newEvent} was already triggered – skipping.");
+            Debug.Log($"Event {newEvent} already triggered – skipping.");
             return;
         }
 
-        // Check if prerequisites are met before triggering
         if (CanTriggerEvent(newEvent))
         {
             triggeredEvents.Add(newEvent);
             Debug.Log($"✅ Event triggered: {newEvent}");
+            OnEventTriggered?.Invoke(newEvent);
             HandleEventLogic(newEvent);
         }
         else
@@ -55,95 +72,78 @@ public class EventManager : MonoBehaviour
 
     private bool CanTriggerEvent(GameEvent newEvent)
     {
-        if (testingMode) return true; // allow all for testing
+        if (testingMode) return true;
 
-        switch (newEvent)
+        if (prerequisites.TryGetValue(newEvent, out var requiredEvents))
         {
-            case GameEvent.WandPickedUp:
-                if (!triggeredEvents.Contains(GameEvent.ChestOpened))
+            foreach (var prereq in requiredEvents)
+            {
+                if (!triggeredEvents.Contains(prereq))
                 {
-                    Debug.Log("⚠️ Missing prerequisite: ChestOpened");
+                    Debug.Log($"⚠️ Missing prerequisite: {prereq} for {newEvent}");
                     return false;
                 }
-                return true;
-
-            case GameEvent.RecipePickedUp:
-                if (!triggeredEvents.Contains(GameEvent.WandPickedUp))
-                {
-                    Debug.Log("⚠️ Missing prerequisite: WandPickedUp");
-                    return false;
-                }
-                return true;
-
-            case GameEvent.CorrectIngredientAdded:
-                if (!triggeredEvents.Contains(GameEvent.RecipePickedUp))
-                {
-                    Debug.Log("⚠️ Missing prerequisite: RecipePickedUp");
-                    return false;
-                }
-                return true;
-
-            case GameEvent.WordCompleted:
-                if (!triggeredEvents.Contains(GameEvent.CorrectIngredientAdded))
-                {
-                    Debug.Log("⚠️ Missing prerequisite: CorrectIngredientAdded");
-                    return false;
-                }
-                return true;
-
-            case GameEvent.ChessKingMoved:
-                if (!triggeredEvents.Contains(GameEvent.WordCompleted))
-                {
-                    Debug.Log("⚠️ Missing prerequisite: WordCompleted");
-                    return false;
-                }
-                return true;
-
-            default:
-                return true; // independent or first event
+            }
         }
+
+        return true;
     }
 
     private void HandleEventLogic(GameEvent newEvent)
     {
+        // Example logic — you can replace with your actual game actions
         switch (newEvent)
         {
             case GameEvent.ChestOpened:
-                // Example: highlight wand or play sound
+                Debug.Log("The chest has been opened — you can now pick up the wand!");
                 break;
 
             case GameEvent.WandPickedUp:
-                // Example: allow picking up ingredients
+                Debug.Log("You picked up the wand — the recipe is now accessible!");
                 break;
 
             case GameEvent.RecipePickedUp:
-                // Example: show recipe UI
+                Debug.Log("You picked up the recipe — time to add ingredients!");
                 break;
 
             case GameEvent.CorrectIngredientAdded:
-                // Example: collect letter
-                CheckIfWordIsComplete();
+                Debug.Log("Correct ingredient added — keep going!");
                 break;
 
             case GameEvent.WrongIngredientAdded:
-                // Example: reject and play sound
+                Debug.Log("Wrong ingredient added — try again!");
                 break;
 
             case GameEvent.WordCompleted:
-                // Example: unlock chess event
+                Debug.Log("Word completed — the chess puzzle is now unlocked!");
                 break;
 
             case GameEvent.ChessKingMoved:
-                // Example: end puzzle or trigger cutscene
+                Debug.Log("The king has moved — puzzle complete!");
                 break;
         }
     }
 
     private void CheckIfWordIsComplete()
     {
-        // Example logic — you can track this properly later
+        // Example logic for testing — auto-triggers completion
         bool allLettersCollected = true;
         if (allLettersCollected)
             TriggerEvent(GameEvent.WordCompleted);
+    }
+
+    // For debug visibility in Inspector
+    private void OnGUI()
+    {
+        GUILayout.BeginArea(new Rect(10, 10, 250, 300));
+        GUILayout.Label("🔹 Triggered Events:");
+        foreach (var evt in triggeredEvents)
+            GUILayout.Label($"- {evt}");
+        GUILayout.EndArea();
+    }
+
+    public bool CanTriggerExternally(GameEvent newEvent)
+    {
+        return CanTriggerEvent(newEvent);
     }
 }

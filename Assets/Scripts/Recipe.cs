@@ -1,7 +1,7 @@
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.XR.Interaction.Toolkit;
-using UnityEngine.XR.Interaction.Toolkit.Interactors; // for VR interactions
-
+using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 public class Recipe : MonoBehaviour
 {
@@ -57,10 +57,15 @@ public class Recipe : MonoBehaviour
         // Parent to camera for VR or leave in world space for 2D view
         Transform cameraTransform = Camera.main.transform;
         spawnedCanvas.transform.SetParent(cameraTransform);
-
-        // Position slightly in front of player
-        spawnedCanvas.transform.localPosition = new Vector3(0, 0, 3f);
+        spawnedCanvas.transform.localPosition = new Vector3(0, 0, 2f);
         spawnedCanvas.transform.localRotation = Quaternion.identity;
+
+        // Try to automatically connect the Close button (if it exists)
+        Button closeButton = spawnedCanvas.GetComponentInChildren<Button>(true);
+        if (closeButton != null)
+        {
+            closeButton.onClick.AddListener(OnCloseButtonPressed);
+        }
 
         spawnedCanvas.SetActive(true);
         isOpen = true;
@@ -69,8 +74,17 @@ public class Recipe : MonoBehaviour
     private void HideCanvas()
     {
         if (spawnedCanvas != null)
+        {
             Destroy(spawnedCanvas);
+            spawnedCanvas = null;
+        }
 
         isOpen = false;
+    }
+
+    // Called by the Close button on the canvas
+    public void OnCloseButtonPressed()
+    {
+        HideCanvas();
     }
 }

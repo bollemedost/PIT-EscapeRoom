@@ -1,5 +1,5 @@
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class Cauldron : MonoBehaviour
 {
@@ -7,21 +7,28 @@ public class Cauldron : MonoBehaviour
     public List<GameObject> correctIngredients; // rattale, spider, snakeskin, feather
 
     [Header("Effect Settings")]
-    public float rejectForce = 8f; // upward force for wrong ingredients
-    public float rejectOutwardForce = 4f; // sideways force
+    public float rejectForce = 8f;           
+    public float rejectOutwardForce = 4f;    
 
     [Header("Audio & Visual Effects")]
-    public AudioSource audioSource;        // assign an AudioSource on the cauldron
-    public AudioClip correctSound;         // bubbling, sparkle, etc.
-    public AudioClip wrongSound;           // splat, hiss, or pop sound
-    public ParticleSystem correctParticles; // optional: sparkle/smoke when correct
+    public AudioSource audioSource;          
+    public AudioClip correctSound;           
+    public AudioClip wrongSound;             
+    public ParticleSystem correctParticles;  
 
     [Header("Letter Reveal UI")]
-    public LetterManager letterManager; // optional: canvas to reveal letters
+    public LetterManager letterManager;      
+
+    // Track ingredients already added
+    private HashSet<GameObject> addedIngredients = new HashSet<GameObject>();
 
     private void OnTriggerEnter(Collider other)
     {
         GameObject ingredient = other.gameObject;
+
+        // Only trigger once per ingredient
+        if (addedIngredients.Contains(ingredient)) return;
+        addedIngredients.Add(ingredient);
 
         if (IsCorrectIngredient(ingredient))
         {
@@ -32,52 +39,67 @@ public class Cauldron : MonoBehaviour
                 letterManager.RevealNextLetter();
 
             EventManager.Instance.TriggerEvent(EventManager.GameEvent.CorrectIngredientAdded);
+
+            // Check if all correct ingredients are added
+            if (AllCorrectIngredientsAdded())
+            {
+                EventManager.Instance.TriggerEvent(EventManager.GameEvent.WordCompleted);
+            }
         }
         else
         {
             RejectIngredient(ingredient);
             PlayWrongEffects();
+
             EventManager.Instance.TriggerEvent(EventManager.GameEvent.WrongIngredientAdded);
         }
     }
 
-    // Check if ingredient is in the correct list
     private bool IsCorrectIngredient(GameObject ingredient)
     {
         return correctIngredients.Contains(ingredient);
     }
 
-    // Keep correct ingredient inside the cauldron
+    private bool AllCorrectIngredientsAdded()
+    {
+        foreach (var ing in correctIngredients)
+        {
+            if (!addedIngredients.Contains(ing))
+                return false;
+        }
+        return true;
+    }
+
     private void KeepIngredient(GameObject ingredient)
     {
         ingredient.transform.SetParent(transform);
         ingredient.transform.localPosition = Vector3.zero;
 
         Rigidbody rb = ingredient.GetComponent<Rigidbody>();
-        if (rb)
-            rb.isKinematic = true;
+        if (rb) rb.isKinematic = true;
+
+        // Disable collider so it cannot trigger again
+        Collider col = ingredient.GetComponent<Collider>();
+        if (col != null) col.enabled = false;
     }
 
-    // Spit out wrong ingredient instantly
-   private void RejectIngredient(GameObject ingredient)
+    private void RejectIngredient(GameObject ingredient)
     {
         Rigidbody rb = ingredient.GetComponent<Rigidbody>();
         if (rb)
         {
-            // Make sure physics is active
             rb.isKinematic = false;
-
-            // Optional: lift it slightly so it doesn't intersect the cauldron
             ingredient.transform.position += Vector3.up * 0.2f;
 
-            // Apply upward + random outward force immediately
-            Vector3 forceDir = (Vector3.up + new Vector3(Random.Range(-0.5f, 0.5f), 0, Random.Range(-0.5f, 0.5f))).normalized;
+            Vector3 forceDir = (Vector3.up + new Vector3(
+                Random.Range(-0.5f, 0.5f),
+                0,
+                Random.Range(-0.5f, 0.5f))).normalized;
+
             rb.AddForce(forceDir * rejectForce, ForceMode.Impulse);
         }
     }
 
-
-    // --- Visual & Sound Effects ---
     private void PlayCorrectEffects()
     {
         if (audioSource != null && correctSound != null)

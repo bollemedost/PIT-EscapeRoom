@@ -1,6 +1,5 @@
 using UnityEngine;
 using TMPro;
-using System.Collections.Generic;
 
 public class LetterManager : MonoBehaviour
 {
@@ -18,12 +17,8 @@ public class LetterManager : MonoBehaviour
         letterFields[currentLetterIndex].text = secretWord[currentLetterIndex].ToString();
         currentLetterIndex++;
 
-        // Optional: trigger event when full word is completed
-        if (currentLetterIndex == secretWord.Length)
-        {
-            Debug.Log("🎉 Word completed!");
-            EventManager.Instance.TriggerEvent(EventManager.GameEvent.WordCompleted);
-        }
+        // Removed WordCompleted event from here!
+        // Now Cauldron will trigger it when all correct ingredients are added
     }
 
     // Reset letters if needed
