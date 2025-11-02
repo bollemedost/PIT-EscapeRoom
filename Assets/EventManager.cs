@@ -12,7 +12,11 @@ public class EventManager : MonoBehaviour
     public bool testingMode = false;
 
     [Header("Scene References")]
-    public GameObject magicStone; // Assign your magic stone GameObject here
+    public GameObject youEscapedCanvas; // Assign your "You Escaped" Canvas here
+    public Timer timerScript;           // ✅ Reference to the Timer script
+    public GameObject leftHand;         // ✅ Player's left hand
+    public GameObject rightHand;        // ✅ Player's right hand
+    public GameObject timerCanvas;      // ✅ Timer Canvas (for hiding when escaped)
 
     public enum GameEvent
     {
@@ -24,7 +28,7 @@ public class EventManager : MonoBehaviour
         WordCompleted,
         ChessKingMoved,
         MagicStoneAppeared,
-        StonePlaced 
+        StonePlaced
     }
 
     private HashSet<GameEvent> triggeredEvents = new HashSet<GameEvent>();
@@ -37,7 +41,7 @@ public class EventManager : MonoBehaviour
         { GameEvent.WordCompleted, new[] { GameEvent.CorrectIngredientAdded } },
         { GameEvent.ChessKingMoved, new[] { GameEvent.WordCompleted } },
         { GameEvent.MagicStoneAppeared, new[] { GameEvent.ChessKingMoved } },
-        { EventManager.GameEvent.StonePlaced, new[] { EventManager.GameEvent.MagicStoneAppeared } }
+        { GameEvent.StonePlaced, new[] { GameEvent.MagicStoneAppeared } }
     };
 
     public event Action<GameEvent> OnEventTriggered;
@@ -45,17 +49,13 @@ public class EventManager : MonoBehaviour
     private void Awake()
     {
         if (Instance == null)
-        {
             Instance = this;
-        }
         else
-        {
             Destroy(gameObject);
-        }
 
-        // Make sure the Magic Stone starts inactive
-        if (magicStone != null)
-            magicStone.SetActive(false);
+        // Hide "You Escaped" canvas initially
+        if (youEscapedCanvas != null)
+            youEscapedCanvas.SetActive(false);
     }
 
     public void TriggerEvent(GameEvent newEvent)
@@ -131,20 +131,53 @@ public class EventManager : MonoBehaviour
                 break;
 
             case GameEvent.MagicStoneAppeared:
-                Debug.Log("✨ A magic stone has appeared in the room!");
-                if (magicStone != null)
-                    magicStone.SetActive(true);
+                Debug.Log("✨ Magic stone event triggered (handled externally)!");
                 break;
-                
+
             case GameEvent.StonePlaced:
                 Debug.Log("✨ Magic stone has been placed on the target!");
+                HandleEscapeSequence();
                 break;
         }
     }
 
-    private void CheckIfWordIsComplete()
+    /// <summary>
+    /// Handles the final "You Escaped" sequence.
+    /// </summary>
+    private void HandleEscapeSequence()
     {
-        // This function is optional; you can implement logic if needed
+        // Show the "You Escaped" canvas
+        if (youEscapedCanvas != null)
+        {
+            youEscapedCanvas.SetActive(true);
+            Debug.Log("🎉 You Escaped Canvas Activated!");
+        }
+
+        // Stop and hide the timer
+        if (timerScript != null)
+        {
+            timerScript.enabled = false;
+            Debug.Log("⏸️ Timer script disabled!");
+        }
+
+        if (timerCanvas != null)
+        {
+            timerCanvas.SetActive(false);
+            Debug.Log("🕒 Timer canvas hidden!");
+        }
+
+        // Disable player hands
+        if (leftHand != null)
+        {
+            leftHand.SetActive(false);
+            Debug.Log("🖐️ Left hand disabled!");
+        }
+
+        if (rightHand != null)
+        {
+            rightHand.SetActive(false);
+            Debug.Log("✋ Right hand disabled!");
+        }
     }
 
     private void OnGUI()
