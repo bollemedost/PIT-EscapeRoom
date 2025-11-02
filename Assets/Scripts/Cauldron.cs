@@ -14,7 +14,10 @@ public class Cauldron : MonoBehaviour
     public AudioSource audioSource;          
     public AudioClip correctSound;           
     public AudioClip wrongSound;             
-    public ParticleSystem correctParticles;  
+
+    [Header("Particle Prefabs")]
+    public GameObject correctParticlePrefab; // ✅ Assign correct effect prefab
+    public GameObject wrongParticlePrefab;   // ✅ Optional: assign wrong effect prefab
 
     [Header("Letter Reveal UI")]
     public LetterManager letterManager;      
@@ -33,7 +36,7 @@ public class Cauldron : MonoBehaviour
         if (IsCorrectIngredient(ingredient))
         {
             KeepIngredient(ingredient);
-            PlayCorrectEffects();
+            PlayCorrectEffects(ingredient);
 
             if (letterManager != null)
                 letterManager.RevealNextLetter();
@@ -49,7 +52,7 @@ public class Cauldron : MonoBehaviour
         else
         {
             RejectIngredient(ingredient);
-            PlayWrongEffects();
+            PlayWrongEffects(ingredient);
 
             EventManager.Instance.TriggerEvent(EventManager.GameEvent.WrongIngredientAdded);
         }
@@ -100,18 +103,57 @@ public class Cauldron : MonoBehaviour
         }
     }
 
-    private void PlayCorrectEffects()
-    {
-        if (audioSource != null && correctSound != null)
-            audioSource.PlayOneShot(correctSound);
+    private void PlayCorrectEffects(GameObject ingredient)
+{
+    if (audioSource != null && correctSound != null)
+        audioSource.PlayOneShot(correctSound);
 
-        if (correctParticles != null)
-            correctParticles.Play();
-    }
-
-    private void PlayWrongEffects()
+    if (correctParticlePrefab != null)
     {
-        if (audioSource != null && wrongSound != null)
-            audioSource.PlayOneShot(wrongSound);
+        GameObject particles = Instantiate(
+            correctParticlePrefab,
+            ingredient.transform.position,
+            Quaternion.identity
+        );
+
+        // Get the particle system
+        ParticleSystem ps = particles.GetComponent<ParticleSystem>();
+        if (ps != null)
+        {
+            ps.Play();
+            Destroy(particles, ps.main.duration + ps.main.startLifetime.constantMax);
+        }
+        else
+        {
+            Destroy(particles, 3f); // fallback if no ParticleSystem component
+        }
     }
+}
+
+private void PlayWrongEffects(GameObject ingredient)
+{
+    if (audioSource != null && wrongSound != null)
+        audioSource.PlayOneShot(wrongSound);
+
+    if (wrongParticlePrefab != null)
+    {
+        GameObject particles = Instantiate(
+            wrongParticlePrefab,
+            ingredient.transform.position,
+            Quaternion.identity
+        );
+
+        ParticleSystem ps = particles.GetComponent<ParticleSystem>();
+        if (ps != null)
+        {
+            ps.Play();
+            Destroy(particles, ps.main.duration + ps.main.startLifetime.constantMax);
+        }
+        else
+        {
+            Destroy(particles, 3f);
+        }
+    }
+}
+
 }
