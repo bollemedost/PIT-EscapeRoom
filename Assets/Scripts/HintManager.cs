@@ -16,6 +16,7 @@ public class HintManager : MonoBehaviour
     [Header("Hint Settings")]
     public float hintDuration = 3f;
     public float hintCooldown = 5f;
+    public float fadeDuration = 1f; // how long fade in/out takes
 
     [Header("Initial Hint")]
     public GameObject initialHint;
@@ -49,7 +50,6 @@ public class HintManager : MonoBehaviour
         if (hintButtonAnimator != null)
             hintButtonAnimator.SetBool(hintAvailableBool, true);
 
-        // Reset owl notes at start
         if (owl != null)
             owl.ResetNotes();
     }
@@ -79,11 +79,9 @@ public class HintManager : MonoBehaviour
         HideAllHints();
         canShowNextHint = true;
 
-        // Reset owl notes for the new event
         if (owl != null)
             owl.ResetNotes();
 
-        // Ensure initial hint never shows again
         if (initialHint != null)
             initialHint.SetActive(false);
 
@@ -95,15 +93,13 @@ public class HintManager : MonoBehaviour
     {
         if (!canShowNextHint) return;
 
-        // Trigger owl flight
         if (owl != null)
             owl.Fly();
 
-        // Disable button animation while hint shows
         if (hintButtonAnimator != null)
             hintButtonAnimator.SetBool(hintAvailableBool, false);
 
-        // Initial hint (only before first event)
+        // Initial hint
         if (!initialHintUsed && !firstEventTriggered && initialHint != null)
         {
             if (hintCoroutine != null)
@@ -116,7 +112,6 @@ public class HintManager : MonoBehaviour
             return;
         }
 
-        // Event hints
         if (currentHints == null || currentHints.hints.Count == 0) return;
         if (hintsUsed >= currentHints.hints.Count) return;
 
@@ -136,8 +131,36 @@ public class HintManager : MonoBehaviour
     private IEnumerator ShowHintCoroutine(GameObject hint)
     {
         hint.SetActive(true);
+
+        CanvasGroup cg = hint.GetComponent<CanvasGroup>();
+        if (cg == null)
+            cg = hint.AddComponent<CanvasGroup>();
+
+        // Fade in
+        yield return StartCoroutine(FadeCanvasGroup(cg, 0f, 1f, fadeDuration));
+
+        // Stay visible
         yield return new WaitForSeconds(hintDuration);
+
+        // Fade out
+        yield return StartCoroutine(FadeCanvasGroup(cg, 1f, 0f, fadeDuration));
+
         hint.SetActive(false);
+    }
+
+    private IEnumerator FadeCanvasGroup(CanvasGroup cg, float start, float end, float duration)
+    {
+        float elapsed = 0f;
+        cg.alpha = start;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            cg.alpha = Mathf.Lerp(start, end, elapsed / duration);
+            yield return null;
+        }
+
+        cg.alpha = end;
     }
 
     private IEnumerator HintCooldownCoroutine()
