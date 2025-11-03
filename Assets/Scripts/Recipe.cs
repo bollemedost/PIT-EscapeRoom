@@ -56,10 +56,7 @@ public class Recipe : MonoBehaviour
 
         // Parent to camera for VR or leave in world space for 2D view
         Transform cameraTransform = Camera.main.transform;
-        spawnedCanvas.transform.SetParent(cameraTransform);
-        spawnedCanvas.transform.localPosition = new Vector3(0, 0, 2f);
-        spawnedCanvas.transform.localRotation = Quaternion.identity;
-
+        
         // Try to automatically connect the Close button (if it exists)
         Button closeButton = spawnedCanvas.GetComponentInChildren<Button>(true);
         if (closeButton != null)

@@ -22,6 +22,12 @@ public class CodePanel : MonoBehaviour
 
     public float delayBeforeCheck = 0.5f; // delay so fourth digit is visible
 
+    void Start()
+    {
+        // Move the code panel slightly backward (e.g., 0.5 units away from camera)
+        transform.localPosition = new Vector3(0, -0.15f, 1.5f); 
+    }
+
     // Called by each number button
     public void AddDigit(string digit)
     {
