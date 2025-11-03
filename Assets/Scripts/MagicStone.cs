@@ -4,7 +4,7 @@ public class MagicStone : MonoBehaviour
 {
     [Header("Optional Effects")]
     public ParticleSystem appearParticles;
-    public AudioSource appearSound;
+    public AudioSource appearSound; // <- assign the AudioSource component here in the Inspector
 
     private void Awake()
     {
@@ -39,7 +39,7 @@ public class MagicStone : MonoBehaviour
             appearParticles.Play();
 
         if (appearSound != null)
-            appearSound.Play();
+            appearSound.Play(); // plays the AudioSource’s assigned clip
 
         Debug.Log("✨ Magic Stone has appeared!");
     }

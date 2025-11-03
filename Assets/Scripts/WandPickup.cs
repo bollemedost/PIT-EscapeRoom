@@ -4,6 +4,10 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 public class WandPickup : MonoBehaviour
 {
+    [Header("Audio Settings")]
+    public AudioSource audioSource;      // Source to play the sound
+    public AudioClip pickupSound;        // Sound that plays when wand is picked up
+
     private bool pickedUp = false;
     private XRGrabInteractable grabInteractable;
 
@@ -12,6 +16,10 @@ public class WandPickup : MonoBehaviour
         grabInteractable = GetComponent<XRGrabInteractable>();
         if (grabInteractable == null)
             Debug.LogError("❌ WandPickup requires an XRGrabInteractable component!");
+
+        // Auto-assign AudioSource if missing
+        if (audioSource == null)
+            audioSource = GetComponent<AudioSource>();
     }
 
     void OnEnable()
@@ -70,5 +78,11 @@ public class WandPickup : MonoBehaviour
         pickedUp = true;
         Debug.Log("✅ Wand picked up!");
         EventManager.Instance.TriggerEvent(EventManager.GameEvent.WandPickedUp);
+
+        // 🎵 Play pickup sound
+        if (audioSource != null && pickupSound != null)
+        {
+            audioSource.PlayOneShot(pickupSound);
+        }
     }
 }
