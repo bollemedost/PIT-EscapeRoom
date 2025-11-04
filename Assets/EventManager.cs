@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
@@ -17,6 +18,11 @@ public class EventManager : MonoBehaviour
     public GameObject leftHand;         // ✅ Player's left hand
     public GameObject rightHand;        // ✅ Player's right hand
     public GameObject timerCanvas;      // ✅ Timer Canvas (for hiding when escaped)
+
+    [Header("Portal")]
+    [Tooltip("Assign the portal GameObject that should appear after a delay")]
+    public GameObject portal;
+    public float portalEnableDelay = 3f; // seconds to wait before enabling
 
     public enum GameEvent
     {
@@ -56,6 +62,10 @@ public class EventManager : MonoBehaviour
         // Hide "You Escaped" canvas initially
         if (youEscapedCanvas != null)
             youEscapedCanvas.SetActive(false);
+
+        // Hide portal initially
+        if (portal != null)
+            portal.SetActive(false);
     }
 
     public void TriggerEvent(GameEvent newEvent)
@@ -137,8 +147,19 @@ public class EventManager : MonoBehaviour
             case GameEvent.StonePlaced:
                 Debug.Log("✨ Magic stone has been placed on the target!");
                 HandleEscapeSequence();
+
+                // Enable portal after a delay
+                if (portal != null)
+                    StartCoroutine(EnablePortalAfterDelay());
                 break;
         }
+    }
+
+    private IEnumerator EnablePortalAfterDelay()
+    {
+        yield return new WaitForSeconds(portalEnableDelay);
+        portal.SetActive(true);
+        Debug.Log("🚪 Portal enabled!");
     }
 
     /// <summary>
