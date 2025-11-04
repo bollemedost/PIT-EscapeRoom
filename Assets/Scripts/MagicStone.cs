@@ -3,15 +3,15 @@ using UnityEngine;
 public class MagicStone : MonoBehaviour
 {
     [Header("Optional Effects")]
-    public ParticleSystem appearParticles;
-    public AudioSource appearSound; // <- assign the AudioSource component here in the Inspector
+    public ParticleSystem appearParticles;    // For when stone appears
+    public AudioSource appearSound;           // For when stone appears
+    public ParticleSystem placedParticles;    // For when stone is placed
+    public AudioSource placedSound;           // For when stone is placed
 
     private void Awake()
     {
-        // Make sure the stone starts inactive
         gameObject.SetActive(false);
 
-        // Subscribe to EventManager
         if (EventManager.Instance != null)
             EventManager.Instance.OnEventTriggered += OnEventTriggered;
     }
@@ -24,9 +24,14 @@ public class MagicStone : MonoBehaviour
 
     private void OnEventTriggered(EventManager.GameEvent evt)
     {
-        if (evt == EventManager.GameEvent.MagicStoneAppeared)
+        switch (evt)
         {
-            ShowStone();
+            case EventManager.GameEvent.MagicStoneAppeared:
+                ShowStone();
+                break;
+            case EventManager.GameEvent.StonePlaced:
+                OnStonePlaced();
+                break;
         }
     }
 
@@ -34,13 +39,32 @@ public class MagicStone : MonoBehaviour
     {
         gameObject.SetActive(true);
 
-        // Play optional effects
-        if (appearParticles != null)
-            appearParticles.Play();
-
+        // Force AudioSource to play even if it was disabled before
         if (appearSound != null)
-            appearSound.Play(); // plays the AudioSource’s assigned clip
+        {
+            appearSound.Stop();
+            appearSound.Play();
+        }
+
+        // Force particle system to play
+        if (appearParticles != null)
+        {
+            appearParticles.Clear();
+            appearParticles.Play();
+        }
 
         Debug.Log("✨ Magic Stone has appeared!");
+    }
+
+
+    private void OnStonePlaced()
+    {
+        if (placedParticles != null)
+            placedParticles.Play();
+
+        if (placedSound != null)
+            placedSound.Play();
+
+        Debug.Log("🎉 Stone placed! Victory effects triggered!");
     }
 }
