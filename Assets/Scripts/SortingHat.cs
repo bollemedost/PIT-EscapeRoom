@@ -1,48 +1,31 @@
 using UnityEngine;
-using UnityEngine.XR;
-using System.Collections.Generic;
+using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 [RequireComponent(typeof(AudioSource))]
+[RequireComponent(typeof(XRGrabInteractable))]
 public class SortingHat : MonoBehaviour
 {
-    public AudioClip[] houseSounds;
+    public AudioClip[] houseSounds; // 0 = Gryffindor, 1 = Hufflepuff, etc.
     private AudioSource audioSource;
-    private bool hasBeenClicked = false;
+    private XRGrabInteractable grabInteractable;
+    private bool hasBeenGrabbed = false;
 
-    public float maxRayDistance = 10f;
-    public Transform rayOrigin;
-
-    void Start()
+    void Awake()
     {
         audioSource = GetComponent<AudioSource>();
+        grabInteractable = GetComponent<XRGrabInteractable>();
+
+        // Listen for grab event
+        grabInteractable.selectEntered.AddListener(OnGrab);
     }
 
-    void Update()
+    private void OnGrab(SelectEnterEventArgs args)
     {
-        List<InputDevice> devices = new List<InputDevice>();
-        InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.HeldInHand | InputDeviceCharacteristics.Controller, devices);
+        if (hasBeenGrabbed) return;
 
-        foreach (var device in devices)
-        {
-            if (device.TryGetFeatureValue(CommonUsages.triggerButton, out bool pressed) && pressed)
-            {
-                Ray ray = new Ray(rayOrigin.position, rayOrigin.forward);
-                if (Physics.Raycast(ray, out RaycastHit hit, maxRayDistance))
-                {
-                    if (hit.collider.GetComponent<SortingHat>() == this)
-                    {
-                        OnRayClick();
-                    }
-                }
-            }
-        }
-    }
+        hasBeenGrabbed = true;
 
-    public void OnRayClick()
-    {
-        if (hasBeenClicked) return;
-
-        hasBeenClicked = true;
         int index = Random.Range(0, houseSounds.Length);
         audioSource.PlayOneShot(houseSounds[index]);
     }
