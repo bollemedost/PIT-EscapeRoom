@@ -1,10 +1,10 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
-using UnityEngine.XR.Interaction.Toolkit; // for haptics
 
 public class CodePanel : MonoBehaviour
 {
+    [Header("Core")]
     public TMP_Text[] digitFields; // assign your 4 text fields
     public string correctCode = "1234";
     private string currentCode = "";
@@ -16,16 +16,28 @@ public class CodePanel : MonoBehaviour
     public AudioClip correctClip;
     public AudioClip wrongClip;
 
-    public XRBaseController rightHandController; // assign XR controller for haptics (optional)
-    public float vibrationDuration = 0.2f;
-    public float vibrationAmplitude = 0.5f;
-
     public float delayBeforeCheck = 0.5f; // delay so fourth digit is visible
+
+    private bool isPanelVisible = false; // track visibility
 
     void Start()
     {
-        // Move the code panel slightly backward (e.g., 0.5 units away from camera)
-        transform.localPosition = new Vector3(0, -0.15f, 1.5f); 
+        // Hide panel at start
+        gameObject.SetActive(false);
+    }
+
+    /// <summary>
+    /// Toggle panel on/off
+    /// </summary>
+    public void TogglePanel()
+    {
+        isPanelVisible = !isPanelVisible;
+        gameObject.SetActive(isPanelVisible);
+
+        if (!isPanelVisible)
+        {
+            ResetCode();
+        }
     }
 
     // Called by each number button
@@ -54,10 +66,9 @@ public class CodePanel : MonoBehaviour
             if (chestToOpen != null)
                 chestToOpen.OpenChest();
 
-            // Wait a bit so the sound can finish before hiding
             yield return new WaitForSeconds(1.0f);
 
-            gameObject.SetActive(false); // now hide the code panel
+            TogglePanel(); // hide panel after correct code
         }
         else
         {
@@ -66,13 +77,9 @@ public class CodePanel : MonoBehaviour
             if (audioSource != null && wrongClip != null)
                 audioSource.PlayOneShot(wrongClip);
 
-            if (rightHandController != null)
-                rightHandController.SendHapticImpulse(vibrationAmplitude, vibrationDuration);
-
             ResetCode();
         }
     }
-
 
     public void ResetCode()
     {
@@ -81,10 +88,10 @@ public class CodePanel : MonoBehaviour
             field.text = "";
     }
 
-        public void ClosePanel()
+    public void ClosePanel()
     {
-        Debug.Log("❌ Code panel closed by player");
+        isPanelVisible = false;
         gameObject.SetActive(false);
+        ResetCode();
     }
-
 }

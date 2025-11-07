@@ -1,35 +1,34 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Cauldron : MonoBehaviour
 {
     [Header("Correct Ingredients")]
-    public List<GameObject> correctIngredients; // rattale, spider, snakeskin, feather
+    public List<GameObject> correctIngredients;
 
     [Header("Effect Settings")]
-    public float rejectForce = 8f;           
-    public float rejectOutwardForce = 4f;    
+    public float rejectForce = 8f;
+    public float rejectOutwardForce = 4f;
 
     [Header("Audio & Visual Effects")]
-    public AudioSource audioSource;          
-    public AudioClip correctSound;           
-    public AudioClip wrongSound;             
+    public AudioSource audioSource;
+    public AudioClip correctSound;
+    public AudioClip wrongSound;
 
     [Header("Particle Prefabs")]
-    public GameObject correctParticlePrefab; // ✅ Assign correct effect prefab
-    public GameObject wrongParticlePrefab;   // ✅ Optional: assign wrong effect prefab
+    public GameObject correctParticlePrefab;
+    public GameObject wrongParticlePrefab;
 
     [Header("Letter Reveal UI")]
-    public LetterManager letterManager;      
+    public LetterManager letterManager;
 
-    // Track ingredients already added
     private HashSet<GameObject> addedIngredients = new HashSet<GameObject>();
 
     private void OnTriggerEnter(Collider other)
     {
         GameObject ingredient = other.gameObject;
 
-        // Only trigger once per ingredient
         if (addedIngredients.Contains(ingredient)) return;
         addedIngredients.Add(ingredient);
 
@@ -43,17 +42,13 @@ public class Cauldron : MonoBehaviour
 
             EventManager.Instance.TriggerEvent(EventManager.GameEvent.CorrectIngredientAdded);
 
-            // Check if all correct ingredients are added
             if (AllCorrectIngredientsAdded())
-            {
                 EventManager.Instance.TriggerEvent(EventManager.GameEvent.WordCompleted);
-            }
         }
         else
         {
             RejectIngredient(ingredient);
             PlayWrongEffects(ingredient);
-
             EventManager.Instance.TriggerEvent(EventManager.GameEvent.WrongIngredientAdded);
         }
     }
@@ -81,7 +76,6 @@ public class Cauldron : MonoBehaviour
         Rigidbody rb = ingredient.GetComponent<Rigidbody>();
         if (rb) rb.isKinematic = true;
 
-        // Disable collider so it cannot trigger again
         Collider col = ingredient.GetComponent<Collider>();
         if (col != null) col.enabled = false;
     }
@@ -104,56 +98,73 @@ public class Cauldron : MonoBehaviour
     }
 
     private void PlayCorrectEffects(GameObject ingredient)
-{
-    if (audioSource != null && correctSound != null)
-        audioSource.PlayOneShot(correctSound);
-
-    if (correctParticlePrefab != null)
     {
-        GameObject particles = Instantiate(
-            correctParticlePrefab,
-            ingredient.transform.position,
-            Quaternion.identity
-        );
+        if (audioSource != null && correctSound != null)
+            audioSource.PlayOneShot(correctSound);
 
-        // Get the particle system
-        ParticleSystem ps = particles.GetComponent<ParticleSystem>();
-        if (ps != null)
+        if (correctParticlePrefab != null)
         {
-            ps.Play();
-            Destroy(particles, ps.main.duration + ps.main.startLifetime.constantMax);
-        }
-        else
-        {
-            Destroy(particles, 3f); // fallback if no ParticleSystem component
+            GameObject particles = Instantiate(
+                correctParticlePrefab,
+                ingredient.transform.position,
+                Quaternion.identity
+            );
+
+            ParticleSystem ps = particles.GetComponent<ParticleSystem>();
+            if (ps != null)
+            {
+                ps.Play();
+                StartCoroutine(FadeOutParticles(ps, 2f)); // fade over 2 seconds
+                Destroy(particles, ps.main.duration + ps.main.startLifetime.constantMax + 1f);
+            }
+            else
+            {
+                Destroy(particles, 10f);
+            }
         }
     }
-}
 
-private void PlayWrongEffects(GameObject ingredient)
-{
-    if (audioSource != null && wrongSound != null)
-        audioSource.PlayOneShot(wrongSound);
-
-    if (wrongParticlePrefab != null)
+    private void PlayWrongEffects(GameObject ingredient)
     {
-        GameObject particles = Instantiate(
-            wrongParticlePrefab,
-            ingredient.transform.position,
-            Quaternion.identity
-        );
+        if (audioSource != null && wrongSound != null)
+            audioSource.PlayOneShot(wrongSound);
 
-        ParticleSystem ps = particles.GetComponent<ParticleSystem>();
-        if (ps != null)
+        if (wrongParticlePrefab != null)
         {
-            ps.Play();
-            Destroy(particles, ps.main.duration + ps.main.startLifetime.constantMax);
-        }
-        else
-        {
-            Destroy(particles, 3f);
+            GameObject particles = Instantiate(
+                wrongParticlePrefab,
+                ingredient.transform.position,
+                Quaternion.identity
+            );
+
+            ParticleSystem ps = particles.GetComponent<ParticleSystem>();
+            if (ps != null)
+            {
+                ps.Play();
+                StartCoroutine(FadeOutParticles(ps, 2f)); // fade over 2 seconds
+                Destroy(particles, ps.main.duration + ps.main.startLifetime.constantMax + 1f);
+            }
+            else
+            {
+                Destroy(particles, 10f);
+            }
         }
     }
-}
 
+    private IEnumerator FadeOutParticles(ParticleSystem ps, float fadeDuration)
+    {
+        var main = ps.main;
+        Color startColor = main.startColor.color;
+        float elapsed = 0f;
+
+        while (elapsed < fadeDuration)
+        {
+            elapsed += Time.deltaTime;
+            float alpha = Mathf.Lerp(1f, 0f, elapsed / fadeDuration);
+            main.startColor = new Color(startColor.r, startColor.g, startColor.b, alpha);
+            yield return null;
+        }
+
+        ps.Stop();
+    }
 }
