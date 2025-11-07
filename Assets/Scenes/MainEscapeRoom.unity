@@ -19789,9 +19789,6 @@ PrefabInstance:
       addedObject: {fileID: 1210811900}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 702c0fc92ca8c704a8af396d82fa1966, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1210811899}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 702c0fc92ca8c704a8af396d82fa1966, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1210811898}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 702c0fc92ca8c704a8af396d82fa1966, type: 3}
       insertIndex: -1
@@ -19799,6 +19796,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 702c0fc92ca8c704a8af396d82fa1966, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1210811896}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 702c0fc92ca8c704a8af396d82fa1966, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1210811899}
   m_SourcePrefab: {fileID: 100100000, guid: 702c0fc92ca8c704a8af396d82fa1966, type: 3}
 --- !u!1 &1210811894 stripped
 GameObject:
@@ -20025,8 +20025,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.1443796, y: 1.447645, z: 1.0778773}
-  m_Center: {x: 8.693542, y: 0.7223455, z: -0.68935215}
+  m_Size: {x: 2.1443796, y: 1.447645, z: 1.0928447}
+  m_Center: {x: 8.693542, y: 0.7223455, z: -0.6968359}
 --- !u!95 &1210811900
 Animator:
   serializedVersion: 7
@@ -30429,7 +30429,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4808866746549998793, guid: b200f6587d118224eba8467281481800, type: 3}
       propertyPath: m_FarAttachMode
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4808866746549998793, guid: b200f6587d118224eba8467281481800, type: 3}
       propertyPath: m_InteractionManager
@@ -34185,7 +34185,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1d449b384cb4e40b7888bdf7670a73d3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.015
+      value: 0.454
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1d449b384cb4e40b7888bdf7670a73d3, type: 3}
       propertyPath: m_LocalPosition.y
@@ -34193,7 +34193,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1d449b384cb4e40b7888bdf7670a73d3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.387
+      value: 2.167
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1d449b384cb4e40b7888bdf7670a73d3, type: 3}
       propertyPath: m_LocalRotation.w
@@ -34262,6 +34262,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1d449b384cb4e40b7888bdf7670a73d3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1986378534}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1d449b384cb4e40b7888bdf7670a73d3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1986378538}
   m_SourcePrefab: {fileID: 100100000, guid: 1d449b384cb4e40b7888bdf7670a73d3, type: 3}
 --- !u!1 &1986378526 stripped
 GameObject:
@@ -34568,6 +34571,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1986378538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1986378526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e169c2bfe0959441997cfd29648a4e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSource: {fileID: 0}
+  pickupSound: {fileID: 0}
 --- !u!1 &1993232243
 GameObject:
   m_ObjectHideFlags: 0
@@ -34681,7 +34698,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b1587802bbc59045971d244646d023d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeInSeconds: 301
+  timeInSeconds: 10
   startOnAwake: 1
   timerText: {fileID: 1621932362}
   timerCanvas: {fileID: 2000624221}
