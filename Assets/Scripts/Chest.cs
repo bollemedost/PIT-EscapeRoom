@@ -3,6 +3,7 @@ using UnityEngine;
 public class Chest : MonoBehaviour
 {
     private Animator animator;
+    private bool isOpened = false; // ✅ Add this flag
 
     [Header("Code Canvas Setup")]
     public CodePanel codePanel; // assign the CodePanel from scene
@@ -36,6 +37,10 @@ public class Chest : MonoBehaviour
     /// </summary>
     public void ShowCodePanel()
     {
+        // 🚫 Prevent opening if chest already opened
+        if (isOpened)
+            return;
+
         if (codePanel != null)
         {
             codePanel.TogglePanel();
@@ -47,11 +52,19 @@ public class Chest : MonoBehaviour
     /// </summary>
     public void OpenChest()
     {
+        // ✅ Prevent multiple openings
+        if (isOpened) return;
+        isOpened = true;
+
         if (animator != null)
             animator.SetTrigger("Open");
 
         if (audioSource != null && openChestSound != null)
             audioSource.PlayOneShot(openChestSound);
+
+        // ✅ Disable the CodePanel permanently
+        if (codePanel != null)
+            codePanel.ClosePanel();
 
         // ✅ Trigger the "ChestOpened" event so SubstituteObjectController knows to swap the wand
         if (EventManager.Instance != null)
