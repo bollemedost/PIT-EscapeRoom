@@ -15,7 +15,7 @@ public class WandPickup : MonoBehaviour
     {
         grabInteractable = GetComponent<XRGrabInteractable>();
         if (grabInteractable == null)
-            Debug.LogError("❌ WandPickup requires an XRGrabInteractable component!");
+            Debug.LogError(" WandPickup requires an XRGrabInteractable component!");
 
         // Auto-assign AudioSource if missing
         if (audioSource == null)
@@ -45,7 +45,7 @@ public class WandPickup : MonoBehaviour
     {
         if (!EventManager.Instance.CanTriggerExternally(EventManager.GameEvent.WandPickedUp))
         {
-            Debug.Log("❌ You can’t pick up the wand yet — open the chest first!");
+            Debug.Log(" You can’t pick up the wand yet — open the chest first!");
             grabInteractable.interactionLayers = 0; // temporarily disable grabbing
             Invoke(nameof(ReenableGrab), 0.1f); // re-enable after short delay
         }
@@ -71,15 +71,15 @@ public class WandPickup : MonoBehaviour
 
         if (!EventManager.Instance.CanTriggerExternally(EventManager.GameEvent.WandPickedUp))
         {
-            Debug.Log("❌ You can’t pick up the wand yet — open the chest first!");
+            Debug.Log(" You can’t pick up the wand yet — open the chest first!");
             return;
         }
 
         pickedUp = true;
-        Debug.Log("✅ Wand picked up!");
+        Debug.Log(" Wand picked up!");
         EventManager.Instance.TriggerEvent(EventManager.GameEvent.WandPickedUp);
 
-        // 🎵 Play pickup sound
+        //  Play pickup sound
         if (audioSource != null && pickupSound != null)
         {
             audioSource.PlayOneShot(pickupSound);

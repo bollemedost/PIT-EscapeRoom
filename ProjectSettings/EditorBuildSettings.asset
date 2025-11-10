@@ -11,7 +11,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/SoffeladeScene.unity
     guid: 78b78bae67fc74b73821e27d740f19a7
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MenuScene.unity
     guid: 996222e7430a8834aa082271badf2b2f
   - enabled: 1
