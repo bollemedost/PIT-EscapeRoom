@@ -12,10 +12,10 @@ public class StartGameSequence : MonoBehaviour
     [Header("Narration Audio Sources")]
     public AudioSource audio1; // Narration for image 1
     public AudioSource audio2; // Narration for image 2
-    public AudioSource audio3; // Narration for image 3
 
     [Header("Scene Settings")]
     public string mainSceneName = "MainEscapeRoom";
+    public float lastImageDuration = 3f; // Duration for image 3
 
     public void OnStartButtonClicked()
     {
@@ -33,7 +33,7 @@ public class StartGameSequence : MonoBehaviour
         }
         else
         {
-            yield return new WaitForSeconds(3f); // fallback if no audio
+            yield return new WaitForSeconds(3f);
         }
         image1.SetActive(false);
         if (audio1 != null) audio1.Stop();
@@ -52,19 +52,10 @@ public class StartGameSequence : MonoBehaviour
         image2.SetActive(false);
         if (audio2 != null) audio2.Stop();
 
-        // --- Image 3 + Narration ---
+        // --- Image 3 (No Narration, Fixed Duration) ---
         image3.SetActive(true);
-        if (audio3 != null && audio3.clip != null)
-        {
-            audio3.Play();
-            yield return new WaitForSeconds(audio3.clip.length);
-        }
-        else
-        {
-            yield return new WaitForSeconds(3f);
-        }
+        yield return new WaitForSeconds(lastImageDuration);
         image3.SetActive(false);
-        if (audio3 != null) audio3.Stop();
 
         // --- Load main scene ---
         SceneManager.LoadScene(mainSceneName);

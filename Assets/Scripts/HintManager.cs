@@ -147,21 +147,38 @@
         {
             hint.SetActive(true);
 
+            // --- Get or add CanvasGroup ---
             CanvasGroup cg = hint.GetComponent<CanvasGroup>();
             if (cg == null)
                 cg = hint.AddComponent<CanvasGroup>();
 
-            // Fade in
+            // --- Get AudioSource (if present) ---
+            AudioSource audioSource = hint.GetComponent<AudioSource>();
+
+            // --- Play narration if available ---
+            if (audioSource != null && audioSource.clip != null)
+                audioSource.Play();
+
+            // --- Fade in ---
             yield return StartCoroutine(FadeCanvasGroup(cg, 0f, 1f, fadeDuration));
 
-            // Stay visible
-            yield return new WaitForSeconds(hintDuration);
+            // --- Wait for either hintDuration or clip length ---
+            float waitTime = hintDuration;
+            if (audioSource != null && audioSource.clip != null)
+                waitTime = Mathf.Max(hintDuration, audioSource.clip.length); // ensures full audio plays
 
-            // Fade out
+            yield return new WaitForSeconds(waitTime);
+
+            // --- Fade out ---
             yield return StartCoroutine(FadeCanvasGroup(cg, 1f, 0f, fadeDuration));
+
+            // --- Stop audio (optional, in case it loops) ---
+            if (audioSource != null)
+                audioSource.Stop();
 
             hint.SetActive(false);
         }
+
 
         private IEnumerator FadeCanvasGroup(CanvasGroup cg, float start, float end, float duration)
         {
