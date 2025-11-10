@@ -85,8 +85,12 @@
             if (initialHint != null)
                 initialHint.SetActive(false);
 
-            if (hintButtonAnimator != null && HasNextHint())
-                hintButtonAnimator.SetBool(hintAvailableBool, true);
+            if (hintButtonAnimator != null)
+            {
+                bool hasHints = firstEventTriggered && HasNextHint();
+                hintButtonAnimator.SetBool(hintAvailableBool, hasHints);
+            }
+
         }
 
         public void ShowHint()

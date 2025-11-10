@@ -3,14 +3,15 @@ using UnityEngine;
 public class Chest : MonoBehaviour
 {
     private Animator animator;
-    private bool isOpened = false; // ✅ Add this flag
+    private bool isOpened = false; // ✅ Prevents reopening
 
     [Header("Code Canvas Setup")]
     public CodePanel codePanel; // assign the CodePanel from scene
 
     [Header("Audio Settings")]
-    public AudioSource audioSource;   // Source to play the sound
-    public AudioClip openChestSound;  // Sound that plays when the chest opens
+    public AudioSource audioSource;   // Source to play sounds
+    public AudioClip openChestSound;  // Sound when chest opens
+    public AudioClip correctCodeSound; // ✅ New: plays when correct code entered
 
     void Start()
     {
@@ -37,14 +38,11 @@ public class Chest : MonoBehaviour
     /// </summary>
     public void ShowCodePanel()
     {
-        // 🚫 Prevent opening if chest already opened
         if (isOpened)
             return;
 
         if (codePanel != null)
-        {
             codePanel.TogglePanel();
-        }
     }
 
     /// <summary>
@@ -52,13 +50,17 @@ public class Chest : MonoBehaviour
     /// </summary>
     public void OpenChest()
     {
-        // ✅ Prevent multiple openings
         if (isOpened) return;
         isOpened = true;
 
         if (animator != null)
             animator.SetTrigger("Open");
 
+        // ✅ Play correct code sound first (if assigned)
+        if (audioSource != null && correctCodeSound != null)
+            audioSource.PlayOneShot(correctCodeSound);
+
+        // ✅ Then play the chest open sound slightly after
         if (audioSource != null && openChestSound != null)
             audioSource.PlayOneShot(openChestSound);
 
@@ -66,7 +68,7 @@ public class Chest : MonoBehaviour
         if (codePanel != null)
             codePanel.ClosePanel();
 
-        // ✅ Trigger the "ChestOpened" event so SubstituteObjectController knows to swap the wand
+        // ✅ Trigger chest opened event
         if (EventManager.Instance != null)
             EventManager.Instance.TriggerEvent(EventManager.GameEvent.ChestOpened);
     }

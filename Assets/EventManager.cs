@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using TMPro;
+
 
 public class EventManager : MonoBehaviour
 {
@@ -18,6 +20,12 @@ public class EventManager : MonoBehaviour
     public GameObject leftHand;         // ✅ Player's left hand
     public GameObject rightHand;        // ✅ Player's right hand
     public GameObject timerCanvas;      // ✅ Timer Canvas (for hiding when escaped)
+
+    [Header("Escape Sequence")]
+    public float escapeCanvasDelay = 2f;
+
+    [Header("Timer UI")]
+    public TMP_Text timerText; // assign your timer text in the Inspector
 
     [Header("Portal")]
     [Tooltip("Assign the portal GameObject that should appear after a delay")]
@@ -162,11 +170,24 @@ public class EventManager : MonoBehaviour
         Debug.Log("🚪 Portal enabled!");
     }
 
-    /// <summary>
-    /// Handles the final "You Escaped" sequence.
+   /// <summary>
+    /// Handles the final "You Escaped" sequence, with a short delay before showing the canvas.
     /// </summary>
     private void HandleEscapeSequence()
     {
+        StartCoroutine(ShowEscapeCanvasWithDelay());
+    }
+
+    private IEnumerator ShowEscapeCanvasWithDelay()
+    {
+        // Stop and hide the timer
+        if (timerScript != null)
+        {
+            timerScript.enabled = false;
+            Debug.Log("⏸️ Timer script disabled!");
+        }
+
+        yield return new WaitForSeconds(escapeCanvasDelay);
         // Show the "You Escaped" canvas
         if (youEscapedCanvas != null)
         {
@@ -174,11 +195,11 @@ public class EventManager : MonoBehaviour
             Debug.Log("🎉 You Escaped Canvas Activated!");
         }
 
-        // Stop and hide the timer
-        if (timerScript != null)
+        // Change timer color to black
+        if (timerText != null)
         {
-            timerScript.enabled = false;
-            Debug.Log("⏸️ Timer script disabled!");
+            timerText.color = Color.black;
+            Debug.Log("🕒 Timer text color set to black!");
         }
 
         if (timerCanvas != null)
