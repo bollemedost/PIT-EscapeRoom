@@ -1294,7 +1294,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d0d37bab85f447b1b9ee7fefb030d29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  impactSound: {fileID: 8300000, guid: 9764f1129b91f48aea386efdef6d9e60, type: 3}
+  impactSound: {fileID: 8300000, guid: fe337aa937ba14d1d83560f58c1ffe0c, type: 3}
 --- !u!114 &121624672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19021,9 +19021,6 @@ MonoBehaviour:
   audioSource: {fileID: 1475162849}
   correctClip: {fileID: 8300000, guid: 569208b997c6ab442953f8585423dbad, type: 3}
   wrongClip: {fileID: 8300000, guid: 0766aa3945f1ea34ebbf9679b0a6708e, type: 3}
-  rightHandController: {fileID: 0}
-  vibrationDuration: 0.2
-  vibrationAmplitude: 0.5
   delayBeforeCheck: 0.5
 --- !u!82 &1475162849
 AudioSource:
@@ -23938,7 +23935,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 975a070db6e8f014ca2a702b01abbb3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  codeCanvasPrefab: {fileID: 1475162839}
+  codePanel: {fileID: 0}
   audioSource: {fileID: 0}
   openChestSound: {fileID: 0}
 --- !u!114 &6818766468789478053
