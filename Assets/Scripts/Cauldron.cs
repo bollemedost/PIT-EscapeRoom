@@ -23,11 +23,18 @@ public class Cauldron : MonoBehaviour
     [Header("Letter Reveal UI")]
     public LetterManager letterManager;
 
+    [Header("Wand Settings")]
+    public string wandTag = "Wand"; // ✅ Set this to your wand’s tag in the Inspector
+
     private HashSet<GameObject> addedIngredients = new HashSet<GameObject>();
 
     private void OnTriggerEnter(Collider other)
     {
         GameObject ingredient = other.gameObject;
+
+        // ✅ Ignore wand completely
+        if (ingredient.CompareTag(wandTag))
+            return;
 
         if (addedIngredients.Contains(ingredient)) return;
         addedIngredients.Add(ingredient);
@@ -114,7 +121,7 @@ public class Cauldron : MonoBehaviour
             if (ps != null)
             {
                 ps.Play();
-                StartCoroutine(FadeOutParticles(ps, 2f)); // fade over 2 seconds
+                StartCoroutine(FadeOutParticles(ps, 2f));
                 Destroy(particles, ps.main.duration + ps.main.startLifetime.constantMax + 1f);
             }
             else
@@ -141,7 +148,7 @@ public class Cauldron : MonoBehaviour
             if (ps != null)
             {
                 ps.Play();
-                StartCoroutine(FadeOutParticles(ps, 2f)); // fade over 2 seconds
+                StartCoroutine(FadeOutParticles(ps, 2f));
                 Destroy(particles, ps.main.duration + ps.main.startLifetime.constantMax + 1f);
             }
             else
