@@ -12,6 +12,10 @@ public class Recipe : MonoBehaviour
     [Header("VR Interaction")]
     public XRBaseInteractor interactor; // Optional: assign if you want haptic feedback
 
+    [Header("Audio")]
+    public AudioSource audioSource;   // Assign an AudioSource (can be on this object)
+    public AudioClip interactionClip; // Optional: Assign a sound to play on interaction
+
     private bool isOpen = false;
 
     void Update()
@@ -20,6 +24,7 @@ public class Recipe : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             ToggleCanvas();
+            PlayInteractionSound();
         }
     }
 
@@ -27,6 +32,7 @@ public class Recipe : MonoBehaviour
     public void OnSelectEntered(SelectEnterEventArgs args)
     {
         ToggleCanvas();
+        PlayInteractionSound();
 
         // Optional: haptic feedback for VR controller
         if (args.interactorObject is XRBaseInputInteractor controllerInteractor)
@@ -83,5 +89,26 @@ public class Recipe : MonoBehaviour
     public void OnCloseButtonPressed()
     {
         HideCanvas();
+    }
+
+    // Plays sound when the object is interacted with
+    private void PlayInteractionSound()
+    {
+        if (audioSource != null)
+        {
+            if (interactionClip != null)
+            {
+                audioSource.clip = interactionClip;
+                audioSource.Play();
+            }
+            else
+            {
+                audioSource.Play(); // Plays whatever clip is already on the AudioSource
+            }
+        }
+        else
+        {
+            Debug.LogWarning("No AudioSource assigned to Recipe script!");
+        }
     }
 }
