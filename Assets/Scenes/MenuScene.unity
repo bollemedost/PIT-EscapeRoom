@@ -198,7 +198,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 13857691}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 75b29b6c6428c984a8a73ffc2d58063b, type: 3}
   m_Name: 
@@ -241,7 +241,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 13857691}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6fa7b4195685c3846be746c74f0ab2f8, type: 3}
   m_Name: 
@@ -253,7 +253,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 13857691}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6a26c941eb8a46f7b6d00416227ab8c0, type: 3}
   m_Name: 
@@ -294,7 +294,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 13857691}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9b1e8c997df241c1a67045eeac79b41b, type: 3}
   m_Name: 
@@ -2020,6 +2020,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   impactSound: {fileID: 8300000, guid: 06a812c83004e4923a5016d198371048, type: 3}
+  impactThreshold: 2
 --- !u!114 &317106194
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5497,6 +5498,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   impactSound: {fileID: 8300000, guid: 06a812c83004e4923a5016d198371048, type: 3}
+  impactThreshold: 2
 --- !u!114 &861715812
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7166,6 +7168,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   impactSound: {fileID: 8300000, guid: f7f91150ca118495c8385f584f221c44, type: 3}
+  impactThreshold: 2
 --- !u!82 &1053604797
 AudioSource:
   m_ObjectHideFlags: 0
@@ -9455,6 +9458,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   impactSound: {fileID: 8300000, guid: f7f91150ca118495c8385f584f221c44, type: 3}
+  impactThreshold: 2
 --- !u!82 &1425064240
 AudioSource:
   m_ObjectHideFlags: 0
@@ -11127,6 +11131,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   impactSound: {fileID: 8300000, guid: 06a812c83004e4923a5016d198371048, type: 3}
+  impactThreshold: 2
 --- !u!82 &1608080793
 AudioSource:
   m_ObjectHideFlags: 0
@@ -14225,6 +14230,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   impactSound: {fileID: 8300000, guid: 06a812c83004e4923a5016d198371048, type: 3}
+  impactThreshold: 2
 --- !u!114 &2053398406
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14924,6 +14930,7 @@ MonoBehaviour:
   correctParticlePrefab: {fileID: 560488111196135234, guid: a04976f4017fabe4d8b83f8334e7a144, type: 3}
   wrongParticlePrefab: {fileID: 560488111196135234, guid: fb56a8fda76545b4a9dd5169adddb3c5, type: 3}
   letterManager: {fileID: 0}
+  wandTag: Wand
 --- !u!135 &2100755869
 SphereCollider:
   m_ObjectHideFlags: 0
