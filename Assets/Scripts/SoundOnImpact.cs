@@ -3,6 +3,7 @@ using UnityEngine;
 public class SoundOnImpact : MonoBehaviour
 {
     public AudioClip impactSound;
+    public float impactThreshold = 2f; // Minimum impact speed to play sound
     private AudioSource audioSource;
 
     void Start()
@@ -12,8 +13,13 @@ public class SoundOnImpact : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        // Afspil lyd hver gang objektet rammer noget
-        audioSource.PlayOneShot(impactSound);
+        // Check the impact force
+        float impactForce = collision.relativeVelocity.magnitude;
+
+        // Play sound only if the impact is above the threshold
+        if (impactForce > impactThreshold)
+        {
+            audioSource.PlayOneShot(impactSound);
+        }
     }
 }
-
