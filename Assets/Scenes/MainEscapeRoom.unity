@@ -10590,7 +10590,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: bc2653f0ce13741408aa4ec68389e116, type: 3}
+  m_Texture: {fileID: 2800000, guid: 767013935cb2a4ea7816c324e9b5c11c, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -28303,7 +28303,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   image1: {fileID: 574096241}
-  imageDuration: 3
+  imageDuration: 10
 --- !u!1 &1305028402
 GameObject:
   m_ObjectHideFlags: 0
@@ -42570,7 +42570,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b1587802bbc59045971d244646d023d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeInSeconds: 601
+  timeInSeconds: 1201
   startOnAwake: 1
   timerText: {fileID: 1621932362}
   timerCanvas: {fileID: 2000624221}
@@ -46197,7 +46197,6 @@ SceneRoots:
   - {fileID: 430046832}
   - {fileID: 261276025}
   - {fileID: 1367817876}
-  - {fileID: 1554236497}
   - {fileID: 2000624227}
   - {fileID: 72957418}
   - {fileID: 1618582000}
@@ -46208,6 +46207,7 @@ SceneRoots:
   - {fileID: 1616745056}
   - {fileID: 425154543}
   - {fileID: 1428903491}
+  - {fileID: 1554236497}
   - {fileID: 2038583003}
   - {fileID: 868747246}
   - {fileID: 1986378525}
