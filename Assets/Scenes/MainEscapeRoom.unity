@@ -9064,6 +9064,9 @@ MonoBehaviour:
   - eventType: 4
     hints:
     - {fileID: 1179215789}
+  - eventType: 3
+    hints:
+    - {fileID: 1179215789}
   - eventType: 5
     hints:
     - {fileID: 1480695765}
