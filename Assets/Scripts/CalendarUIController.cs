@@ -3,7 +3,7 @@ using UnityEngine;
 public class CalendarUIController : MonoBehaviour
 {
     [Header("References")]
-    public GameObject calendarCanvas; // Assign your world-space Canvas here
+    public GameObject calendarCanvas; // Assign world-space Canvas
 
     [Header("Settings")]
     public KeyCode toggleKey = KeyCode.C; // Press 'C' to toggle the calendar
@@ -18,14 +18,13 @@ public class CalendarUIController : MonoBehaviour
 
     void Update()
     {
-        // Keyboard input for testing (non-VR)
+        // Keyboard input for testing in scene view and not VR
         if (Input.GetKeyDown(toggleKey))
         {
             ToggleCanvas();
         }
     }
 
-    // You can call this from VR interaction as well
     public void ToggleCanvas()
     {
         if (calendarCanvas == null) return;
@@ -34,13 +33,13 @@ public class CalendarUIController : MonoBehaviour
         calendarCanvas.SetActive(isCanvasVisible);
     }
 
-    // Optional: simple collider-based interaction for VR
     private void OnTriggerEnter(Collider other)
     {
-        // Example: if hand or controller touches calendar
         if (other.CompareTag("PlayerHand") || other.CompareTag("VRController"))
         {
             ToggleCanvas();
         }
     }
 }
+// This code has been inspired by Copilot and ChatGPT.
+

@@ -3,21 +3,21 @@ using UnityEngine;
 public class Chest : MonoBehaviour
 {
     private Animator animator;
-    private bool isOpened = false; // ✅ Prevents reopening
+    private bool isOpened = false; // Prevents reopening chest
 
     [Header("Code Canvas Setup")]
-    public CodePanel codePanel; // assign the CodePanel from scene
+    public CodePanel codePanel;
 
     [Header("Audio Settings")]
     public AudioSource audioSource;   // Source to play sounds
     public AudioClip openChestSound;  // Sound when chest opens
-    public AudioClip correctCodeSound; // ✅ New: plays when correct code entered
+    public AudioClip correctCodeSound; 
 
     void Start()
     {
         animator = GetComponent<Animator>();
         if (animator == null)
-            Debug.LogError("❌ No Animator found on the Chest!");
+            Debug.LogError("No Animator found on the Chest!");
 
         // Auto-assign AudioSource if missing
         if (audioSource == null)
@@ -26,16 +26,15 @@ public class Chest : MonoBehaviour
 
     void Update()
     {
-        // Optional: For desktop testing only
+        // For testing in scene view use the E key
         if (Input.GetKeyDown(KeyCode.E))
         {
             ShowCodePanel();
         }
     }
 
-    /// <summary>
-    /// Show the CodePanel (does NOT move it)
-    /// </summary>
+
+    // Show the CodePanel
     public void ShowCodePanel()
     {
         if (isOpened)
@@ -45,9 +44,7 @@ public class Chest : MonoBehaviour
             codePanel.TogglePanel();
     }
 
-    /// <summary>
-    /// Called when the player enters the correct code
-    /// </summary>
+    // Called when the player enters the correct code
     public void OpenChest()
     {
         if (isOpened) return;
@@ -56,20 +53,22 @@ public class Chest : MonoBehaviour
         if (animator != null)
             animator.SetTrigger("Open");
 
-        // ✅ Play correct code sound first (if assigned)
+        // Plays the correct code sound first
         if (audioSource != null && correctCodeSound != null)
             audioSource.PlayOneShot(correctCodeSound);
 
-        // ✅ Then play the chest open sound slightly after
+        // Then it plays the chest open sound after
         if (audioSource != null && openChestSound != null)
             audioSource.PlayOneShot(openChestSound);
 
-        // ✅ Disable the CodePanel permanently
+        // Disable the CodePanel permanently to prevent further interaction
         if (codePanel != null)
             codePanel.ClosePanel();
 
-        // ✅ Trigger chest opened event
+        // Trigger chest opened event in the EventManager
         if (EventManager.Instance != null)
             EventManager.Instance.TriggerEvent(EventManager.GameEvent.ChestOpened);
     }
 }
+// This code has been inspired by Copilot and ChatGPT.
+

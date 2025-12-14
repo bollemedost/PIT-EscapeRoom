@@ -3,10 +3,10 @@ using UnityEngine;
 public class MagicStone : MonoBehaviour
 {
     [Header("Optional Effects")]
-    public ParticleSystem appearParticles;    // For when stone appears
-    public AudioSource appearSound;           // For when stone appears
-    public ParticleSystem placedParticles;    // For when stone is placed
-    public AudioSource placedSound;           // For when stone is placed
+    public ParticleSystem appearParticles;    // Particle for when stone appears
+    public AudioSource appearSound;           // Audio For when stone appears
+    public ParticleSystem placedParticles;    // Particle for when stone is placed
+    public AudioSource placedSound;           // Audio For when stone is placed
 
     private void Awake()
     {
@@ -39,21 +39,19 @@ public class MagicStone : MonoBehaviour
     {
         gameObject.SetActive(true);
 
-        // Force AudioSource to play even if it was disabled before
         if (appearSound != null)
         {
             appearSound.Stop();
             appearSound.Play();
         }
 
-        // Force particle system to play
         if (appearParticles != null)
         {
             appearParticles.Clear();
             appearParticles.Play();
         }
 
-        Debug.Log("✨ Magic Stone has appeared!");
+        Debug.Log("Magic Stone has appeared");
     }
 
 
@@ -65,6 +63,8 @@ public class MagicStone : MonoBehaviour
         if (placedSound != null)
             placedSound.Play();
 
-        Debug.Log("🎉 Stone placed! Victory effects triggered!");
+        Debug.Log("Stone placed!");
     }
 }
+// This code has been inspired by Copilot and ChatGPT.
+

@@ -6,21 +6,21 @@ using UnityEngine.XR.Interaction.Toolkit.Interactors;
 public class Recipe : MonoBehaviour
 {
     [Header("UI Canvas")]
-    public GameObject recipeCanvasPrefab; // Assign your recipe canvas prefab here
+    public GameObject recipeCanvasPrefab; // Assign recipe canvas prefab here
     private GameObject spawnedCanvas;
 
     [Header("VR Interaction")]
-    public XRBaseInteractor interactor; // Optional: assign if you want haptic feedback
+    public XRBaseInteractor interactor; //not used but could be for future extensions for haptic feedback
 
     [Header("Audio")]
-    public AudioSource audioSource;   // Assign an AudioSource (can be on this object)
-    public AudioClip interactionClip; // Optional: Assign a sound to play on interaction
+    public AudioSource audioSource;  
+    public AudioClip interactionClip;
 
     private bool isOpen = false;
 
     void Update()
     {
-        // For testing in Unity without VR
+        // For testing in Unity without VR use the R key
         if (Input.GetKeyDown(KeyCode.R))
         {
             ToggleCanvas();
@@ -28,13 +28,13 @@ public class Recipe : MonoBehaviour
         }
     }
 
-    // Called by VR interaction (e.g., XR Grab or XR Simple Interactable)
+    // Called by VR interaction 
     public void OnSelectEntered(SelectEnterEventArgs args)
     {
         ToggleCanvas();
         PlayInteractionSound();
 
-        // Optional: haptic feedback for VR controller
+        // Not used but optional for future improvements like haptic feedback for VR controller
         if (args.interactorObject is XRBaseInputInteractor controllerInteractor)
         {
             controllerInteractor.SendHapticImpulse(0.5f, 0.2f);
@@ -112,3 +112,5 @@ public class Recipe : MonoBehaviour
         }
     }
 }
+// This code has been inspired by Copilot and ChatGPT.
+

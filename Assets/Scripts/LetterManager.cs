@@ -4,8 +4,8 @@ using TMPro;
 public class LetterManager : MonoBehaviour
 {
     [Header("UI Text Fields for Letters")]
-    public TMP_Text[] letterFields; // Assign your 4 text fields in Inspector
-    public string secretWord = "KING"; // Your secret word
+    public TMP_Text[] letterFields; // Assign the 4 letter text fields in Inspector
+    public string secretWord = "KING"; // The secret word
 
     [Header("Turbulence Settings")]
     public float amplitude = 5f;   // How strong the wobble is
@@ -66,3 +66,5 @@ public class LetterManager : MonoBehaviour
             field.text = "_"; // or empty string
     }
 }
+// This code has been inspired by Copilot and ChatGPT.
+

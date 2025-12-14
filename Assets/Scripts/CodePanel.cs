@@ -5,18 +5,18 @@ using System.Collections;
 public class CodePanel : MonoBehaviour
 {
     [Header("Core")]
-    public TMP_Text[] digitFields; // assign your 4 text fields
-    public string correctCode = "1234";
+    public TMP_Text[] digitFields; // assign text fields
+    public string correctCode = "1234"; // set the correct code in the inspector
     private string currentCode = "";
 
-    public Chest chestToOpen; // assign the chest
+    public Chest chestToOpen; // assign the chest gameobject
 
     [Header("Feedback")]
-    public AudioSource audioSource;       // assign an AudioSource on the canvas or parent
+    public AudioSource audioSource; // assign an AudioSource
     public AudioClip correctClip;
     public AudioClip wrongClip;
 
-    public float delayBeforeCheck = 0.5f; // delay so fourth digit is visible
+    public float delayBeforeCheck = 0.5f; // delay so fourth digit is visible before it checks for the correct code
 
     private bool isPanelVisible = false; // track visibility
 
@@ -26,9 +26,8 @@ public class CodePanel : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    /// <summary>
-    /// Toggle panel on/off
-    /// </summary>
+    
+    // Toggle panel on/off
     public void TogglePanel()
     {
         isPanelVisible = !isPanelVisible;
@@ -58,7 +57,7 @@ public class CodePanel : MonoBehaviour
 
         if (currentCode == correctCode)
         {
-            Debug.Log("✅ Correct code!");
+            Debug.Log("Correct code");
 
             if (audioSource != null && correctClip != null)
                 audioSource.PlayOneShot(correctClip);
@@ -72,7 +71,7 @@ public class CodePanel : MonoBehaviour
         }
         else
         {
-            Debug.Log("❌ Wrong code!");
+            Debug.Log("Wrong code");
 
             if (audioSource != null && wrongClip != null)
                 audioSource.PlayOneShot(wrongClip);
@@ -95,3 +94,5 @@ public class CodePanel : MonoBehaviour
         ResetCode();
     }
 }
+// This code has been inspired by Copilot and ChatGPT.
+

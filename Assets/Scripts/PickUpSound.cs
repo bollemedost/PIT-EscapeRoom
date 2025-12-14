@@ -23,3 +23,4 @@ public class PickupSound : MonoBehaviour
         audioSource.PlayOneShot(pickupSound);
     }
 }
+// This code has been inspired by Copilot and ChatGPT.

@@ -8,8 +8,8 @@ public class GameProgressController : MonoBehaviour
     public GameObject recipe;
     public GameObject cauldron;
     public GameObject chess;
-    public GameObject magicStone; // Reference to the magic stone
-    public GameObject stoneTarget; // Optional: show the stone target when stone can be placed
+    public GameObject magicStone; // Reference to the magic stone gameobject
+    public GameObject stoneTarget; 
 
     void Start()
     {
@@ -21,9 +21,9 @@ public class GameProgressController : MonoBehaviour
         chess.SetActive(false);
         magicStone.SetActive(false);
         if (stoneTarget != null)
-            stoneTarget.SetActive(false); // Stone target starts inactive
+            stoneTarget.SetActive(false);
 
-        // Subscribe to EventManager
+        // Subscribe to the EventManager
         EventManager.Instance.OnEventTriggered += OnEventTriggered;
     }
 
@@ -57,15 +57,17 @@ public class GameProgressController : MonoBehaviour
             case EventManager.GameEvent.MagicStoneAppeared:
                 magicStone.SetActive(true);
                 if (stoneTarget != null)
-                    stoneTarget.SetActive(true); // Show target for placing the stone
+                    stoneTarget.SetActive(true); 
                 break;
 
             case EventManager.GameEvent.StonePlaced:
-                Debug.Log("Stone placed! You can now trigger the next event or effect.");
-                // Optional: hide target or trigger next step
+                Debug.Log("Stone placed");
+                
                 if (stoneTarget != null)
                     stoneTarget.SetActive(false);
                 break;
         }
     }
 }
+// This code has been inspired by Copilot and ChatGPT.
+

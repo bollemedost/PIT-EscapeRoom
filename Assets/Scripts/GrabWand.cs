@@ -113,3 +113,5 @@ public class OneTimeGrabXRI : MonoBehaviour
         if (grab != null) Destroy(grab);
     }
 }
+// This code has been inspired by Copilot and ChatGPT.
+

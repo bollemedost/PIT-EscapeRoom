@@ -7,7 +7,7 @@ public class OwlController : MonoBehaviour
     public Animator animator;
     public Transform[] flightPoints;
     public Transform noteDropPoint;
-    public GameObject[] carriedNotes; // Assign all notes in inspector
+    public GameObject[] carriedNotes; // Assign all the notes in inspector
 
     [Header("Settings")]
     public float speed = 5f;
@@ -21,10 +21,9 @@ public class OwlController : MonoBehaviour
     private int currentNoteIndex = 0;
     private bool noteDropped = false;
 
-    /// <summary>
-    /// Call this to make the owl fly along its path.
-    /// Assigns the next note automatically.
-    /// </summary>
+
+    // Call this to make the owl fly along its path.
+    // Assigns the next note automatically.
     public void Fly()
     {
         if (!isFlying && flightPoints.Length > 0)
@@ -71,9 +70,7 @@ public class OwlController : MonoBehaviour
         isFlying = false;
     }
 
-    /// <summary>
-    /// Drops the given note naturally.
-    /// </summary>
+    // Drops the given note naturally.
     private void DropNote(GameObject note)
     {
         if (note == null) return;
@@ -87,9 +84,7 @@ public class OwlController : MonoBehaviour
         if (dropSound != null) dropSound.Play();
     }
 
-    /// <summary>
     /// Resets all notes back to owl's hand.
-    /// </summary>
     public void ResetNotes()
     {
         currentNoteIndex = 0;
@@ -110,3 +105,5 @@ public class OwlController : MonoBehaviour
         noteDropped = false;
     }
 }
+// This code has been inspired by Copilot and ChatGPT.
+

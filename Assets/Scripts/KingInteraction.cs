@@ -5,8 +5,8 @@ using System.Collections;
 public class KingInteraction : MonoBehaviour
 {
     [Header("References")]
-    public GameObject whiteKing; // assign in inspector
-    public Transform moveTarget; // where the black king should move to (optional)
+    public GameObject whiteKing; // assign the white king gameobject in inspector
+    public Transform moveTarget; // target where the black king should move to
     public AudioSource audioSource;
     public AudioClip moveSound;
     public AudioClip fallSound;
@@ -15,18 +15,18 @@ public class KingInteraction : MonoBehaviour
 
     private void Start()
     {
-        // Optional safety check
         if (whiteKing == null)
-            Debug.LogWarning("⚠️ White king not assigned in KingInteraction script.");
+            Debug.LogWarning("White king not assigned in KingInteraction script.");
     }
 
-        private void Update()
+    private void Update()
     {
+        // For testing in scene view use the K key
         if (Input.GetKeyDown(KeyCode.K))
             StartCoroutine(TriggerChessEvent());
     }
 
-    // Called when touched or pressed in VR
+    // Called when the black king is touched or pressed in VR
     public void OnSelectEntered(SelectEnterEventArgs args)
     {
         if (!hasInteracted)
@@ -38,13 +38,13 @@ public class KingInteraction : MonoBehaviour
 
     private IEnumerator TriggerChessEvent()
     {
-        Debug.Log("♟️ Black King interacted with!");
+        Debug.Log("Black King interacted with!");
 
         // Play move sound
         if (audioSource && moveSound)
             audioSource.PlayOneShot(moveSound);
 
-        // Move black king slightly (optional animation/move)
+        // Move black king slightly
         if (moveTarget != null)
         {
             float duration = 1f;
@@ -78,7 +78,9 @@ public class KingInteraction : MonoBehaviour
             }
         }
 
-        // Optionally trigger your event manager
+        // update game state via event manager
         EventManager.Instance.TriggerEvent(EventManager.GameEvent.ChessKingMoved);
     }
 }
+// This code has been inspired by Copilot and ChatGPT.
+

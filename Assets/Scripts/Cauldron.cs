@@ -24,7 +24,7 @@ public class Cauldron : MonoBehaviour
     public LetterManager letterManager;
 
     [Header("Wand Settings")]
-    public string wandTag = "Wand"; // ✅ Set this to your wand’s tag in the Inspector
+    public string wandTag = "Wand"; // Set this to wand’s tag in the Inspector
 
     private HashSet<GameObject> addedIngredients = new HashSet<GameObject>();
 
@@ -32,7 +32,7 @@ public class Cauldron : MonoBehaviour
     {
         GameObject ingredient = other.gameObject;
 
-        // ✅ Ignore wand completely
+        // Ignore wand completely
         if (ingredient.CompareTag(wandTag))
             return;
 
@@ -175,3 +175,4 @@ public class Cauldron : MonoBehaviour
         ps.Stop();
     }
 }
+// This code has been inspired by Copilot and ChatGPT.

@@ -17,7 +17,7 @@ public class HintManager : MonoBehaviour
     public float hintDuration = 3f;
     public float hintCooldown = 5f;
     public float fadeDuration = 1f; // how long fade in/out takes
-    public float audioDelay = 0.3f; // ✅ new: delay before hint audio starts
+    public float audioDelay = 0.3f; 
 
     [Header("Initial Hint")]
     public GameObject initialHint;
@@ -117,7 +117,7 @@ public class HintManager : MonoBehaviour
             return;
         }
 
-        // --- Event hints ---
+        // Event hints
         if (currentHints == null || currentHints.hints.Count == 0) return;
         if (hintsUsed >= currentHints.hints.Count) return;
 
@@ -144,35 +144,35 @@ public class HintManager : MonoBehaviour
     {
         hint.SetActive(true);
 
-        // --- Get or add CanvasGroup ---
+        // Get or add CanvasGroup
         CanvasGroup cg = hint.GetComponent<CanvasGroup>();
         if (cg == null)
             cg = hint.AddComponent<CanvasGroup>();
 
-        // --- Get AudioSource (if present) ---
+        // Get AudioSource (if present)
         AudioSource audioSource = hint.GetComponent<AudioSource>();
 
-        // --- Fade in ---
+        // Fade in
         yield return StartCoroutine(FadeCanvasGroup(cg, 0f, 1f, fadeDuration));
 
-        // --- Play narration after short delay ---
+        // Play narration after short delay
         if (audioSource != null && audioSource.clip != null)
         {
             yield return new WaitForSeconds(audioDelay);
             audioSource.Play();
         }
 
-        // --- Wait for either hintDuration or clip length ---
+        // Wait for either hintDuration or clip length
         float waitTime = hintDuration;
         if (audioSource != null && audioSource.clip != null)
             waitTime = Mathf.Max(hintDuration, audioSource.clip.length + audioDelay); // include delay
 
         yield return new WaitForSeconds(waitTime);
 
-        // --- Fade out ---
+        // Fade out
         yield return StartCoroutine(FadeCanvasGroup(cg, 1f, 0f, fadeDuration));
 
-        // --- Stop audio ---
+        // Stop audio
         if (audioSource != null)
             audioSource.Stop();
 
@@ -223,3 +223,5 @@ public class HintManager : MonoBehaviour
         public List<GameObject> hints;
     }
 }
+// This code has been inspired by Copilot and ChatGPT.
+

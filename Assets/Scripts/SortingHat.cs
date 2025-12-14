@@ -30,3 +30,5 @@ public class SortingHat : MonoBehaviour
         audioSource.PlayOneShot(houseSounds[index]);
     }
 }
+// This code has been inspired by Copilot and ChatGPT.
+
