@@ -24,7 +24,7 @@ public class StartGameSequence : MonoBehaviour
 
     private IEnumerator ShowImagesAndLoadScene()
     {
-        // --- Image 1 + Narration ---
+        // Image 1 + Narration
         image1.SetActive(true);
         if (audio1 != null && audio1.clip != null)
         {
@@ -38,7 +38,7 @@ public class StartGameSequence : MonoBehaviour
         image1.SetActive(false);
         if (audio1 != null) audio1.Stop();
 
-        // --- Image 2 + Narration ---
+        // Image 2 + Narration
         image2.SetActive(true);
         if (audio2 != null && audio2.clip != null)
         {
@@ -52,12 +52,14 @@ public class StartGameSequence : MonoBehaviour
         image2.SetActive(false);
         if (audio2 != null) audio2.Stop();
 
-        // --- Image 3 (No Narration, Fixed Duration) ---
+        //Image 3 (No Narration, Fixed Duration)
         image3.SetActive(true);
         yield return new WaitForSeconds(lastImageDuration);
         image3.SetActive(false);
 
-        // --- Load main scene ---
+        // Load main scene
         SceneManager.LoadScene(mainSceneName);
     }
 }
+// This code has been inspired by Copilot and ChatGPT.
+

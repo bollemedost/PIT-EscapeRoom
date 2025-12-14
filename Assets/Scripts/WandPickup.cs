@@ -86,3 +86,5 @@ public class WandPickup : MonoBehaviour
         }
     }
 }
+// This code has been inspired by Copilot and ChatGPT.
+

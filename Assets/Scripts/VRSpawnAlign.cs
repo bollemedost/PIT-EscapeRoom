@@ -124,3 +124,5 @@ public class VRSpawnAlign : MonoBehaviour
         xrOrigin.transform.position += toTarget;
     }
 }
+// This code has been inspired by Copilot and ChatGPT.
+

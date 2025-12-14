@@ -15,11 +15,11 @@ public class EventManager : MonoBehaviour
     public bool testingMode = false;
 
     [Header("Scene References")]
-    public GameObject youEscapedCanvas; // Assign your "You Escaped" Canvas here
-    public Timer timerScript;           // ✅ Reference to the Timer script
-    public GameObject leftHand;         // ✅ Player's left hand
-    public GameObject rightHand;        // ✅ Player's right hand
-    public GameObject timerCanvas;      // ✅ Timer Canvas (for hiding when escaped)
+    public GameObject youEscapedCanvas; // Assign "You Escaped" Canvas here
+    public Timer timerScript;           // Reference to the Timer script
+    public GameObject leftHand;         // Player's left hand (not used)
+    public GameObject rightHand;        // Player's right hand (not used)
+    public GameObject timerCanvas;      // Timer Canvas (for hiding when escaped)
 
     [Header("Escape Sequence")]
     public float escapeCanvasDelay = 2f;
@@ -87,13 +87,13 @@ public class EventManager : MonoBehaviour
         if (CanTriggerEvent(newEvent))
         {
             triggeredEvents.Add(newEvent);
-            Debug.Log($"✅ Event triggered: {newEvent}");
+            Debug.Log($"Event triggered: {newEvent}");
             OnEventTriggered?.Invoke(newEvent);
             HandleEventLogic(newEvent);
         }
         else
         {
-            Debug.Log($"❌ Cannot trigger {newEvent} yet – prerequisites not met.");
+            Debug.Log($"Cannot trigger {newEvent} yet – prerequisites not met.");
         }
     }
 
@@ -107,7 +107,7 @@ public class EventManager : MonoBehaviour
             {
                 if (!triggeredEvents.Contains(prereq))
                 {
-                    Debug.Log($"⚠️ Missing prerequisite: {prereq} for {newEvent}");
+                    Debug.Log($"Missing prerequisite: {prereq} for {newEvent}");
                     return false;
                 }
             }
@@ -149,11 +149,11 @@ public class EventManager : MonoBehaviour
                 break;
 
             case GameEvent.MagicStoneAppeared:
-                Debug.Log("✨ Magic stone event triggered (handled externally)!");
+                Debug.Log("Magic stone event triggered (handled externally)!");
                 break;
 
             case GameEvent.StonePlaced:
-                Debug.Log("✨ Magic stone has been placed on the target!");
+                Debug.Log("Magic stone has been placed on the target!");
                 HandleEscapeSequence();
 
                 // Enable portal after a delay
@@ -167,12 +167,10 @@ public class EventManager : MonoBehaviour
     {
         yield return new WaitForSeconds(portalEnableDelay);
         portal.SetActive(true);
-        Debug.Log("🚪 Portal enabled!");
+        Debug.Log("Portal enabled!");
     }
 
-   /// <summary>
-    /// Handles the final "You Escaped" sequence, with a short delay before showing the canvas.
-    /// </summary>
+    // Handles the final "You Escaped" sequence, with a short delay before showing the canvas.
     private void HandleEscapeSequence()
     {
         StartCoroutine(ShowEscapeCanvasWithDelay());
@@ -184,7 +182,7 @@ public class EventManager : MonoBehaviour
         if (timerScript != null)
         {
             timerScript.enabled = false;
-            Debug.Log("⏸️ Timer script disabled!");
+            Debug.Log("Timer script disabled!");
         }
 
         yield return new WaitForSeconds(escapeCanvasDelay);
@@ -192,33 +190,33 @@ public class EventManager : MonoBehaviour
         if (youEscapedCanvas != null)
         {
             youEscapedCanvas.SetActive(true);
-            Debug.Log("🎉 You Escaped Canvas Activated!");
+            Debug.Log("You Escaped Canvas Activated!");
         }
 
         // Change timer color to black
         if (timerText != null)
         {
             timerText.color = Color.black;
-            Debug.Log("🕒 Timer text color set to black!");
+            Debug.Log("Timer text color set to black!");
         }
 
         if (timerCanvas != null)
         {
             timerCanvas.SetActive(false);
-            Debug.Log("🕒 Timer canvas hidden!");
+            Debug.Log("Timer canvas hidden!");
         }
 
         // Disable player hands
         if (leftHand != null)
         {
             leftHand.SetActive(false);
-            Debug.Log("🖐️ Left hand disabled!");
+            Debug.Log("Left hand disabled!");
         }
 
         if (rightHand != null)
         {
             rightHand.SetActive(false);
-            Debug.Log("✋ Right hand disabled!");
+            Debug.Log("Right hand disabled!");
         }
     }
 
@@ -236,3 +234,5 @@ public class EventManager : MonoBehaviour
         return CanTriggerEvent(newEvent);
     }
 }
+// This code has been inspired by Copilot and ChatGPT.
+
