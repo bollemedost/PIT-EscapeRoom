@@ -40,7 +40,7 @@ public class WandPickup : MonoBehaviour
         TryPickup();
     }
 
-    // Called before the wand is grabbed (to check prerequisites)
+    // Called before the wand is grabbed
     private void OnGrabAttempt(SelectEnterEventArgs args)
     {
         if (!EventManager.Instance.CanTriggerExternally(EventManager.GameEvent.WandPickedUp))
@@ -56,7 +56,7 @@ public class WandPickup : MonoBehaviour
         grabInteractable.interactionLayers = -1; // re-enable all layers
     }
 
-    // Non-VR fallback (desktop)
+    // Non-VR testing via keyboard use keycode P
     void Update()
     {
         if (!pickedUp && Input.GetKeyDown(KeyCode.P))

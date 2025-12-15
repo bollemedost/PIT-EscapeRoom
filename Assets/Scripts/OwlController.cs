@@ -7,7 +7,7 @@ public class OwlController : MonoBehaviour
     public Animator animator;
     public Transform[] flightPoints;
     public Transform noteDropPoint;
-    public GameObject[] carriedNotes; // Assign all the notes in inspector
+    public GameObject[] carriedNotes;
 
     [Header("Settings")]
     public float speed = 5f;
@@ -22,7 +22,7 @@ public class OwlController : MonoBehaviour
     private bool noteDropped = false;
 
 
-    // Call this to make the owl fly along its path.
+    // This is to make the owl fly along its path.
     // Assigns the next note automatically.
     public void Fly()
     {
@@ -48,7 +48,7 @@ public class OwlController : MonoBehaviour
                 transform.position = Vector3.MoveTowards(transform.position, point.position, speed * Time.deltaTime);
                 transform.LookAt(point);
 
-                // Drop note at drop point
+                // Drop note at correct drop point
                 if (!noteDropped && currentNoteIndex < carriedNotes.Length &&
                     carriedNotes[currentNoteIndex] != null &&
                     noteDropPoint != null &&
@@ -70,7 +70,6 @@ public class OwlController : MonoBehaviour
         isFlying = false;
     }
 
-    // Drops the given note naturally.
     private void DropNote(GameObject note)
     {
         if (note == null) return;
@@ -79,12 +78,12 @@ public class OwlController : MonoBehaviour
 
         Rigidbody rb = note.GetComponent<Rigidbody>();
         if (rb == null) rb = note.AddComponent<Rigidbody>();
-        rb.isKinematic = false; // allow physics
+        rb.isKinematic = false;
 
         if (dropSound != null) dropSound.Play();
     }
 
-    /// Resets all notes back to owl's hand.
+    // Resets notes back to owl's "hands".
     public void ResetNotes()
     {
         currentNoteIndex = 0;
@@ -98,7 +97,7 @@ public class OwlController : MonoBehaviour
 
                 Rigidbody rb = note.GetComponent<Rigidbody>();
                 if (rb != null)
-                    rb.isKinematic = true; // stop physics while attached
+                    rb.isKinematic = true;
             }
         }
 

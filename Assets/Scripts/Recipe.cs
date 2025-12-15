@@ -103,7 +103,7 @@ public class Recipe : MonoBehaviour
             }
             else
             {
-                audioSource.Play(); // Plays whatever clip is already on the AudioSource
+                audioSource.Play(); 
             }
         }
         else

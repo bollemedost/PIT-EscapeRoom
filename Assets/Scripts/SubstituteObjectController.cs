@@ -29,8 +29,8 @@ public class SubstituteObjectController : MonoBehaviour
     {
         if (evt == activateEvent)
         {
-            if (realObject != null) realObject.SetActive(true);     // enable real object
-            if (substitute != null) substitute.SetActive(false);    // hide substitute
+            if (realObject != null) realObject.SetActive(true); // enable real object
+            if (substitute != null) substitute.SetActive(false); // hide substitute
         }
     }
 }

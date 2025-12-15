@@ -8,9 +8,9 @@ public class LetterManager : MonoBehaviour
     public string secretWord = "KING"; // The secret word
 
     [Header("Turbulence Settings")]
-    public float amplitude = 5f;   // How strong the wobble is
-    public float frequency = 5f;   // How fast it moves
-    public float speed = 2f;       // Scroll speed of wave
+    public float amplitude = 5f;   
+    public float frequency = 5f;   
+    public float speed = 2f;       
 
     private int currentLetterIndex = 0;
 

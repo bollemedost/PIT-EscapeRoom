@@ -13,7 +13,7 @@ public class CalendarUIController : MonoBehaviour
     void Start()
     {
         if (calendarCanvas != null)
-            calendarCanvas.SetActive(false); // Hide it at the start
+            calendarCanvas.SetActive(false); // Hide at the start
     }
 
     void Update()

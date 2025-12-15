@@ -16,3 +16,5 @@ public class SplashSound : MonoBehaviour
         audioSource.PlayOneShot(splashSound);
     }
 }
+// This code has been inspired by Copilot and ChatGPT.
+

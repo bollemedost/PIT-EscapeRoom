@@ -28,7 +28,7 @@ public class VRSpawnAlign : MonoBehaviour
         foreach (var s in subs)
         {
             s.trackingOriginUpdated += OnTrackingOriginUpdated;
-            s.boundaryChanged += OnBoundaryChanged; // optional extra hook
+            s.boundaryChanged += OnBoundaryChanged; 
         }
     }
 

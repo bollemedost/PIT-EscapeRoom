@@ -9,7 +9,7 @@ public class Chest : MonoBehaviour
     public CodePanel codePanel;
 
     [Header("Audio Settings")]
-    public AudioSource audioSource;   // Source to play sounds
+    public AudioSource audioSource;   
     public AudioClip openChestSound;  // Sound when chest opens
     public AudioClip correctCodeSound; 
 
@@ -19,7 +19,6 @@ public class Chest : MonoBehaviour
         if (animator == null)
             Debug.LogError("No Animator found on the Chest!");
 
-        // Auto-assign AudioSource if missing
         if (audioSource == null)
             audioSource = GetComponent<AudioSource>();
     }
@@ -32,7 +31,6 @@ public class Chest : MonoBehaviour
             ShowCodePanel();
         }
     }
-
 
     // Show the CodePanel
     public void ShowCodePanel()

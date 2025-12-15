@@ -46,7 +46,7 @@ public class WandGrabByAction : MonoBehaviour
             if (wandInteractor.hasSelection)
             {
                 // Toggle off: end current selection
-                wandInteractor.EndManualInteraction(); // <-- no args in XRIT 3.x
+                wandInteractor.EndManualInteraction();
             }
             else
             {
@@ -74,7 +74,7 @@ public class WandGrabByAction : MonoBehaviour
         if (!stickySelect && isHeldDown && wandInteractor != null && wandInteractor.hasSelection)
         {
             // Release on button up
-            wandInteractor.EndManualInteraction(); // <-- no args
+            wandInteractor.EndManualInteraction();
         }
         isHeldDown = false;
     }

@@ -149,7 +149,7 @@ public class HintManager : MonoBehaviour
         if (cg == null)
             cg = hint.AddComponent<CanvasGroup>();
 
-        // Get AudioSource (if present)
+        // Get AudioSource
         AudioSource audioSource = hint.GetComponent<AudioSource>();
 
         // Fade in

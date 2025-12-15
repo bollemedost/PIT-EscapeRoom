@@ -18,3 +18,4 @@ public class animationController : MonoBehaviour
         myAnimator.SetFloat("Trigger", triggerValue); 
     }
 }
+// This script is based on the tutorial: https://www.youtube.com/watch?v=3dYSHu95P_0&t=1s

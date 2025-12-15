@@ -6,7 +6,7 @@ public class StoneTarget : MonoBehaviour
     public GameObject magicStone; // Assign the magic stone here
 
     [Header("Placement Settings")]
-    public Transform placementPoint; // Optional: position where stone should snap
+    public Transform placementPoint; 
 
     [Header("Audio/Visual Feedback")]
     public ParticleSystem onPlacedParticles;
@@ -25,7 +25,7 @@ public class StoneTarget : MonoBehaviour
             SnapStone();
             PlayEffects();
             EventManager.Instance.TriggerEvent(EventManager.GameEvent.StonePlaced);
-            Debug.Log("✅ Magic stone placed on target!");
+            Debug.Log("Magic stone placed on target!");
         }
     }
 
@@ -53,3 +53,5 @@ public class StoneTarget : MonoBehaviour
             onPlacedParticles.Play();
     }
 }
+// This code has been inspired by Copilot and ChatGPT.
+
