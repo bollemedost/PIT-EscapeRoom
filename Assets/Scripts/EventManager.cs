@@ -223,7 +223,7 @@ public class EventManager : MonoBehaviour
     private void OnGUI()
     {
         GUILayout.BeginArea(new Rect(10, 10, 250, 300));
-        GUILayout.Label("🔹 Triggered Events:");
+        GUILayout.Label("Triggered Events:");
         foreach (var evt in triggeredEvents)
             GUILayout.Label($"- {evt}");
         GUILayout.EndArea();
